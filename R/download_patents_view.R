@@ -1,9 +1,11 @@
 #' Read a table from PatentsView
 #'
-#' Downloads zipped table from patentsview.org, unzips it, and reads it
-#' into R using [readr::read_tsv].
+#' Downloads zipped table from patentsview.org, unzips it, and returns the path
+#' to the unzipped file.
 #'
 #' @param table Table name, e.g., `g_location_disambiguated`.
+#'
+#' @returns Path to the unzipped tsv file.
 #'
 #' @export
 download_patents_view <- function(table) {
@@ -33,13 +35,10 @@ download_patents_view <- function(table) {
   download.file(pv_path, destfile = tf)
 
   td <- tempdir()
-  unzipped_file <- unzip(tf, exdir = td)
+  unzipped_file_path <- unzip(tf, exdir = td)
   file.remove(tf)
 
-  df <- readr::read_tsv(unzipped_file, show_col_types = FALSE)
-  file.remove(unzipped_file)
-
-  df
+  unzipped_file_path
 }
 
 
@@ -50,13 +49,52 @@ download_patents_view <- function(table) {
 #' using [readr::read_tsv], and writes it to `s3_out`.
 #'
 #' @inheritParams download_patents_view
-#' @param s3_out S3 path.
+#' @param s3_out S3 path, e.g., `s3://<bucket>/path`
 #'
 #' @export
-download_patents_view_to_s3 <- function(table, s3_out) {
-  df <- download_patents_view(
-    table = table
-  )
+download_patents_view_to_s3 <- function(
+    table, s3_out
+) {
+  tsv_path <- download_patents_view(table = table)
 
-  arrow::write_dataset(df, s3_out)
+  df <- readr::read_tsv(tsv_path)
+
+  arrow::write_dataset(
+    df,
+    s3_out
+  )
+}
+
+
+
+#' Write a table from PatentsView to S3
+#'
+#' Downloads zipped table from patentsview.org, unzips it, reads it into R
+#' using [readr::read_tsv_chunked], and writes each chunk to `s3_out`.
+#'
+#' @inheritParams download_patents_view_to_s3
+#' @param chunk_size The number of rows to include in each chunk.
+#' @param chunk_column_name The column name that will be used to partition the
+#' data on S3.
+#'
+#' @export
+download_patents_view_to_s3_chunked <- function(
+    table, s3_out, chunk_size = 1e5, chunk_column_name = "chunk"
+) {
+  tsv_path <- download_patents_view(table = table)
+
+  readr::read_tsv_chunked(
+    file = tsv_path,
+    callback = \(x, pos) {
+      x[[chunk_column_name]] <- pos %/% chunk_size
+
+      arrow::write_dataset(
+        x,
+        s3_out,
+        partitioning = chunk_column_name
+      )
+    },
+    chunk_size = chunk_size,
+    show_col_types = FALSE
+  )
 }
