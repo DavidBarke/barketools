@@ -34,8 +34,12 @@ download_patents_view <- function(table) {
 
   td <- tempdir()
   unzipped_file <- unzip(tf, exdir = td)
+  file.remove(tf)
 
-  readr::read_tsv(unzipped_file, show_col_types = FALSE)
+  df <- readr::read_tsv(unzipped_file, show_col_types = FALSE)
+  file.remove(unzipped_file)
+
+  df
 }
 
 
