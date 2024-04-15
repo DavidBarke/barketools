@@ -1,0 +1,31 @@
+# Commands that were run to setup ec2-R image
+yum install git -y
+yum install R -y
+yum install sqlite -y
+yum install mariadb-connector-c-devel -y
+sudo dnf install -y https://apache.jfrog.io/artifactory/arrow/amazon-linux/$(cut -d: -f6 /etc/system-release-cpe)/apache-arrow-release-latest.rpm
+sudo dnf install -y arrow-devel # For C++
+sudo dnf install -y arrow-glib-devel # For GLib (C)
+sudo dnf install -y arrow-acero-devel # For Apache Arrow Acero
+sudo dnf install -y arrow-dataset-devel # For Apache Arrow Dataset C++
+sudo dnf install -y arrow-dataset-glib-devel # For Apache Arrow Dataset GLib (C)
+sudo dnf install -y arrow-flight-devel # For Apache Arrow Flight C++
+sudo dnf install -y arrow-flight-glib-devel # For Apache Arrow Flight GLib (C)
+sudo dnf install -y arrow-flight-sql-devel # For Apache Arrow Flight SQL C++
+sudo dnf install -y arrow-flight-sql-glib-devel # For Apache Arrow Flight SQL GLib (C)
+sudo dnf install -y gandiva-devel # For Apache Gandiva C++
+sudo dnf install -y gandiva-glib-devel # For Apache Gandiva GLib (C)
+sudo dnf install -y parquet-devel # For Apache Parquet C++
+sudo dnf install -y parquet-glib-devel # For Apache Parquet GLib (C)
+sudo yum install fribidi-devel -y
+sudo yum install libtiff-devel -y
+sudo yum install libjpeg-turbo-devel -y
+sudo yum install libgit2-devel -y
+git clone https://{GITHUB_PAT}@github.com/DavidBarke/gcpd
+cd gcpd
+R -e "install.packages('RSQLite', repos="http://cran.us.r-project.org")"
+R -e "renv::restore()"
+wget https://s3.amazonaws.com/rstudio-ide-build/server/rhel9/arm64/rstudio-server-rhel-2023.12.1-402-aarch64.rpm
+sudo yum install rstudio-server-rhel-2023.12.1-402-aarch64.rpm
+# https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/managing-users.html
+
