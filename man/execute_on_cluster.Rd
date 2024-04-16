@@ -11,6 +11,7 @@ execute_on_cluster(
   iter_to_params,
   image_id = "ami-0438747454de030f3",
   instance_type = "t2.small",
+  terminate = TRUE,
   upload_s3_prefix = "upload-rstudio-server-ubuntu-task",
   upload_s3_bucket = "gcpd"
 )
@@ -32,6 +33,8 @@ into a list of parameters that are passed to `rmarkdown::render` in the
 \item{image_id}{AMI image id. Each instance will be based on this image.}
 
 \item{instance_type}{EC2 instance type.}
+
+\item{terminate}{If `TRUE` terminate the instance after script completes.}
 
 \item{upload_s3_prefix}{Path to which the JSON file describing the cluster
 is uploaded. The default will upload it to a preconfigured folder in S3

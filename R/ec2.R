@@ -11,6 +11,7 @@
 #' `params` argument.
 #' @param image_id AMI image id. Each instance will be based on this image.
 #' @param instance_type EC2 instance type.
+#' @param terminate If `TRUE` terminate the instance after script completes.
 #' @param upload_s3_prefix Path to which the JSON file describing the cluster
 #' is uploaded. The default will upload it to a preconfigured folder in S3
 #' that will trigger a lambda which will eventually create the requested
@@ -25,6 +26,7 @@ execute_on_cluster <- function(
     iter_to_params,
     image_id = "ami-0438747454de030f3",
     instance_type = "t2.small",
+    terminate = TRUE,
     upload_s3_prefix = "upload-rstudio-server-ubuntu-task",
     upload_s3_bucket = "gcpd"
 ) {
@@ -56,7 +58,8 @@ cluster_desc <- function(
     iterable,
     iter_to_params,
     image_id = "ami-0438747454de030f3",
-    instance_type = "t2.small"
+    instance_type = "t2.small",
+    terminate = TRUE
 ) {
   tasks <- purrr::map(iterable, \(el) {
     params_str <- iter_to_params(el) |>
@@ -67,11 +70,16 @@ cluster_desc <- function(
       #! /bin/bash
       cd {renv_directory}
       Rscript -e "rmarkdown::render(\'{rmd_file}\', params={params_str})"
-      shutdown -h now
       ',
       renv_directory = renv_directory,
       rmd_file = rmd_file,
       params_str = params_str
+    )
+
+    if (terminate) user_data <- glue::glue(
+      "{user_data}
+      shutdown -h now",
+      user_data = user_data
     )
 
     list(
