@@ -1,3 +1,23 @@
+#' Execute a parameterized RMD on cluster
+#'
+#' @param renv_directory Path to a directory on the host machine that is
+#' managed by renv and where all dependencies have been installed into the
+#' AMI image.
+#' @param rmd_file Path to a RMD script relative to `renv_directory`.
+#' @param iterable Vector or list. A separate instance is launched for each
+#' element.
+#' @param iter_to_params Function that transforms an element of `iterable`
+#' into a list of parameters that are passed to `rmarkdown::render` in the
+#' `params` argument.
+#' @param image_id AMI image id. Each instance will be based on this image.
+#' @param instance_type EC2 instance type.
+#' @param upload_s3_prefix Path to which the JSON file describing the cluster
+#' is uploaded. The default will upload it to a preconfigured folder in S3
+#' that will trigger a lambda which will eventually create the requested
+#' instances.
+#' @param upload_s3_bucket S3 bucket.
+#'
+#' @export
 execute_on_cluster <- function(
     renv_directory,
     rmd_file,
