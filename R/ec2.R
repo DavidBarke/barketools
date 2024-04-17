@@ -119,3 +119,43 @@ list_to_str <- function(l, quote = "'") {
   }) |> paste(collapse = ",")
   glue::glue("list(", kv_pairs, ")")
 }
+
+
+
+#' EC2 vCPU Usage
+#'
+#' Compute vCPU usage of all non-terminated instances.
+#'
+#' @returns vCPU usage (an integer).
+#'
+#' @export
+ec2_vcpu_usage <- function() {
+  out <- shell("aws ec2 describe-instances", wait = FALSE, intern = TRUE) |>
+    fromJSON()
+
+  out$Reservations$Instances |>
+    purrr::keep(\(instance) instance$State$Name != "terminated") |>
+    purrr::map_dbl(ec2_instance_to_vcpu) |>
+    sum()
+}
+
+ec2_instance_to_vcpu <- function(instance) {
+  instance$CpuOptions$CoreCount
+}
+
+#' EC2 On-Demand Limit
+#'
+#' Returns the service quota for "Running On-Demand Standard (A, C, D, H, I, M,
+#' R, T, Z) instances".
+#'
+#' @export
+ec2_on_demand_limit <- function() {
+  out <- shell(
+    "aws service-quotas list-service-quotas --service-code ec2 --quota-code L-1216C47A",
+    wait = FALSE, intern = TRUE
+  ) |>
+    fromJSON()
+
+  out$Quotas$Value
+}
+
