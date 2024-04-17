@@ -36,7 +36,8 @@ execute_on_cluster <- function(
     iterable = iterable,
     iter_to_params = iter_to_params,
     image_id = image_id,
-    instance_type = instance_type
+    instance_type = instance_type,
+    terminate = terminate
   )
 
   upload_s3_key <- glue::glue(
