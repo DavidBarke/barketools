@@ -25,6 +25,10 @@ execute_on_cluster <- function(
     iterable,
     iter_to_params,
     image_id = "ami-0438747454de030f3",
+    security_group_ids = c(
+      "sg-01f269087c271cf61", # RStudio Server
+      "sg-0f0e8b61aa72dbdef" # SSH
+    ),
     instance_type = "t2.small",
     terminate = TRUE,
     upload_s3_prefix = "upload-rstudio-server-ubuntu-task",
@@ -37,7 +41,8 @@ execute_on_cluster <- function(
     iter_to_params = iter_to_params,
     image_id = image_id,
     instance_type = instance_type,
-    terminate = terminate
+    terminate = terminate,
+    security_group_ids = security_group_ids
   )
 
   upload_s3_key <- glue::glue(
@@ -60,7 +65,11 @@ cluster_desc <- function(
     iter_to_params,
     image_id = "ami-0438747454de030f3",
     instance_type = "t2.small",
-    terminate = TRUE
+    terminate = TRUE,
+    security_group_ids = c(
+      "sg-01f269087c271cf61", # RStudio Server
+      "sg-0f0e8b61aa72dbdef" # SSH
+    )
 ) {
   tasks <- purrr::map(iterable, \(el) {
     params_str <- iter_to_params(el) |>
@@ -69,6 +78,7 @@ cluster_desc <- function(
     user_data <- glue::glue(
       '
       #! /bin/bash
+      export HOME="/root"
       cd {renv_directory}
       Rscript -e "rmarkdown::render(\'{rmd_file}\', params={params_str})"
       ',
@@ -91,6 +101,7 @@ cluster_desc <- function(
   desc <- list(
     instance_type = instance_type,
     image_id = image_id,
+    security_group_ids = security_group_ids,
     tasks = tasks
   )
 }
