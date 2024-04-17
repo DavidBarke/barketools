@@ -24,6 +24,7 @@ execute_on_cluster <- function(
     rmd_file,
     iterable,
     iter_to_params,
+    output_file = "output.log",
     image_id = "ami-0438747454de030f3",
     security_group_ids = c(
       "sg-01f269087c271cf61", # RStudio Server
@@ -42,7 +43,8 @@ execute_on_cluster <- function(
     image_id = image_id,
     instance_type = instance_type,
     terminate = terminate,
-    security_group_ids = security_group_ids
+    security_group_ids = security_group_ids,
+    output_file = output_file
   )
 
   upload_s3_key <- glue::glue(
@@ -63,6 +65,7 @@ cluster_desc <- function(
     rmd_file,
     iterable,
     iter_to_params,
+    output_file = "output.log",
     image_id = "ami-0438747454de030f3",
     instance_type = "t2.small",
     terminate = TRUE,
@@ -80,11 +83,12 @@ cluster_desc <- function(
       #! /bin/bash
       export HOME="/root"
       cd {renv_directory}
-      Rscript -e "rmarkdown::render(\'{rmd_file}\', params={params_str})"
+      Rscript -e "rmarkdown::render(\'{rmd_file}\', params={params_str})" > {output_file} 2>&1 &
       ',
       renv_directory = renv_directory,
       rmd_file = rmd_file,
-      params_str = params_str
+      params_str = params_str,
+      output_file = output_file
     )
 
     if (terminate) user_data <- glue::glue(
