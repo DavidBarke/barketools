@@ -9,8 +9,11 @@ cluster_desc(
   rmd_file,
   iterable,
   iter_to_params,
+  output_file = "output.log",
   image_id = "ami-0438747454de030f3",
-  instance_type = "t2.small"
+  instance_type = "t2.small",
+  terminate = TRUE,
+  security_group_ids = c("sg-01f269087c271cf61", "sg-0f0e8b61aa72dbdef")
 )
 }
 \description{

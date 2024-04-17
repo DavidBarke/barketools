@@ -3,6 +3,8 @@
 export(download_patents_view)
 export(download_patents_view_to_s3)
 export(download_patents_view_to_s3_chunked)
+export(ec2_on_demand_limit)
+export(ec2_vcpu_usage)
 export(execute_on_cluster)
 export(max_or_na)
 export(min_or_na)
