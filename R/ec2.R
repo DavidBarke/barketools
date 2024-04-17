@@ -33,7 +33,8 @@ execute_on_cluster <- function(
     instance_type = "t2.small",
     terminate = TRUE,
     upload_s3_prefix = "upload-rstudio-server-ubuntu-task",
-    upload_s3_bucket = "gcpd"
+    upload_s3_bucket = "gcpd",
+    renv_directory_cmds = NULL
 ) {
   desc <- cluster_desc(
     renv_directory = renv_directory,
@@ -44,7 +45,8 @@ execute_on_cluster <- function(
     instance_type = instance_type,
     terminate = terminate,
     security_group_ids = security_group_ids,
-    output_file = output_file
+    output_file = output_file,
+    renv_directory_cmds = renv_directory_cmds
   )
 
   upload_s3_key <- glue::glue(
@@ -72,29 +74,25 @@ cluster_desc <- function(
     security_group_ids = c(
       "sg-01f269087c271cf61", # RStudio Server
       "sg-0f0e8b61aa72dbdef" # SSH
-    )
+    ),
+    renv_directory_cmds = NULL
 ) {
   tasks <- purrr::map(iterable, \(el) {
     params_str <- iter_to_params(el) |>
       list_to_str()
 
     user_data <- glue::glue(
-      '
-      #! /bin/bash
+      '#! /bin/bash
       export HOME="/root"
-      cd {renv_directory}
-      Rscript -e "rmarkdown::render(\'{rmd_file}\', params={params_str})" > {output_file} 2>&1
-      ',
+      cd {renv_directory}',
+      renv_directory_cmds,
+      'Rscript -e "rmarkdown::render(\'{rmd_file}\', params={params_str})" > {output_file} 2>&1',
+      if (terminate) 'shutdown -h now',
       renv_directory = renv_directory,
       rmd_file = rmd_file,
       params_str = params_str,
-      output_file = output_file
-    )
-
-    if (terminate) user_data <- glue::glue(
-      "{user_data}
-      shutdown -h now",
-      user_data = user_data
+      output_file = output_file,
+      .null = NULL
     )
 
     list(
