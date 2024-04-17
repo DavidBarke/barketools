@@ -83,7 +83,7 @@ cluster_desc <- function(
       #! /bin/bash
       export HOME="/root"
       cd {renv_directory}
-      Rscript -e "rmarkdown::render(\'{rmd_file}\', params={params_str})" > {output_file} 2>&1 &
+      Rscript -e "rmarkdown::render(\'{rmd_file}\', params={params_str})" > {output_file} 2>&1
       ',
       renv_directory = renv_directory,
       rmd_file = rmd_file,
