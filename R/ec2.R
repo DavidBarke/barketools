@@ -87,7 +87,7 @@ cluster_desc <- function(
       cd {renv_directory}',
       renv_directory_cmds,
       'Rscript -e "rmarkdown::render(\'{rmd_file}\', params={params_str})" > {output_file} 2>&1',
-      if (terminate) 'shutdown -h now',
+      if (terminate) '\nshutdown -h now',
       renv_directory = renv_directory,
       rmd_file = rmd_file,
       params_str = params_str,
