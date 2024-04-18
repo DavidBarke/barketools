@@ -82,10 +82,10 @@ cluster_desc <- function(
       list_to_str()
 
     user_data <- glue::glue(
-      '#! /bin/bash
-      export HOME="/root"
-      cd {renv_directory}',
-      renv_directory_cmds,
+      "#! /bin/bash",
+      'export HOME="/root"',
+      'cd {renv_directory}',
+      paste(renv_directory_cmds, collapse = "\n"),
       'Rscript -e "rmarkdown::render(\'{rmd_file}\', params={params_str})" > {output_file} 2>&1',
       if (terminate) 'shutdown -h now',
       renv_directory = renv_directory,
