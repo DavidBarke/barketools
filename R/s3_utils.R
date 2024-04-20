@@ -112,6 +112,9 @@ write_json_to_s3 <- function(x, s3_key, bucket = "gcpd") {
 
 
 s3_put_object <- function(file, s3_key, bucket = "gcpd") {
+  if (!exists("shell")) {
+    cli::cli_abort("`shell` command not available on this OS!")
+  }
   shell(
     glue::glue(
       "aws s3api put-object",
