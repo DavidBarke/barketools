@@ -47,7 +47,8 @@ execute_on_cluster <- function(
     terminate = terminate,
     security_group_ids = security_group_ids,
     output_file = output_file,
-    renv_directory_cmds = renv_directory_cmds
+    renv_directory_cmds = renv_directory_cmds,
+    renv_directory_cmds_post = renv_directory_cmds_post
   )
 
   upload_s3_key <- glue::glue(
