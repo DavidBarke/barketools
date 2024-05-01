@@ -77,7 +77,8 @@ cluster_desc <- function(
       "sg-01f269087c271cf61", # RStudio Server
       "sg-0f0e8b61aa72dbdef" # SSH
     ),
-    renv_directory_cmds = NULL
+    renv_directory_cmds = NULL,
+    renv_directory_cmds_post = NULL
 ) {
   tasks <- purrr::map(iterable, \(el) {
     params_str <- iter_to_params(el) |>
