@@ -34,7 +34,8 @@ execute_on_cluster <- function(
     terminate = TRUE,
     upload_s3_prefix = "upload-rstudio-server-ubuntu-task",
     upload_s3_bucket = "gcpd",
-    renv_directory_cmds = NULL
+    renv_directory_cmds = NULL,
+    renv_directory_cmds_post = NULL
 ) {
   desc <- cluster_desc(
     renv_directory = renv_directory,
@@ -87,6 +88,7 @@ cluster_desc <- function(
       'cd {renv_directory}',
       paste(renv_directory_cmds, collapse = "\n"),
       'Rscript -e "rmarkdown::render(\'{rmd_file}\', params={params_str})" > {output_file} 2>&1',
+      paste(renv_directory_cmds_post, collapse = "\n"),
       if (terminate) 'shutdown -h now',
       renv_directory = renv_directory,
       rmd_file = rmd_file,
