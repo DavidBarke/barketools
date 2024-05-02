@@ -15,12 +15,6 @@ load_python_script <- function(path) {
   )
 }
 
-list_s3_files <- function(prefix) {
-  load_python_script("./pygcpd/s3/s3_utils.py")
-  python_env <- setup_python_env()
-  python_env$list_files(prefix)
-}
-
 
 
 #' @export
@@ -99,6 +93,13 @@ s3_key_exists_list <- function(
 
 
 
+#' Write JSON to S3
+#'
+#' @param x List.
+#' @param s3_key S3 key.
+#' @param bucket S3 bucket.
+#'
+#' @export
 write_json_to_s3 <- function(x, s3_key, bucket = "gcpd") {
   tf <- tempfile(fileext = ".json")
   jsonlite::write_json(x, tf, auto_unbox = TRUE)
@@ -111,6 +112,13 @@ write_json_to_s3 <- function(x, s3_key, bucket = "gcpd") {
 
 
 
+#' Upload file to S3
+#'
+#' @param file File.
+#' @param s3_key S3 key.
+#' @param bucket S3 bucket.
+#'
+#' @export
 s3_put_object <- function(file, s3_key, bucket = "gcpd") {
   if (!exists("shell")) {
     cli::cli_abort("`shell` command not available on this OS!")
