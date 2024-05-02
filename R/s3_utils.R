@@ -147,3 +147,67 @@ s3_merge <- function(s3_keys_in, s3_key_out, bucket = "gcpd") {
     s3_key_out
   )
 }
+
+
+
+#' List Files on S3
+#'
+#' @param prefix Common prefix to all files.
+#' @param bucket S3 bucket.
+#' @param include_folder If `TRUE`, also include S3 keys referring to folders.
+#' @param max Maximum number of results to return.
+#' @param value See `Value`.
+#' @param delimiter Character string used to group keys. Read the AWS docs for
+#' more details.
+#'
+#' @returns If `value == "vector"`, a character vector of S3 keys. If
+#' `value == "df"` a data frame of S3 keys.
+s3_list_files <- function(
+    prefix = NULL, bucket = "gcpd", include_folder = FALSE, max = 1e3,
+    value = c("vector", "df"), delimiter = NULL
+) {
+  value <- match.arg(value)
+
+  files <- aws.s3::get_bucket_df(
+    bucket = bucket,
+    prefix = prefix,
+    max = max,
+    delimiter = delimiter
+  )
+
+  df <- if (include_folder) {
+    files
+  } else {
+    files |>
+      dplyr::filter(!stringr::str_detect(Key, "/$"))
+  } |>
+    tibble::as_tibble()
+
+  if (value == "vector") df$Key else df
+}
+
+
+
+#' List S3 Subfolders
+#'
+#' Subfolders are exactly one level further down than the given prefix.
+#'
+#' @inheritParams s3_list_files
+#' @param subfolder_only Remove the prefix from the subfolder S3 key.
+s3_list_subfolders <- function(
+    prefix = NULL, bucket = "gcpd", max = 1e3, subfolder_only = FALSE
+) {
+  sf <- aws.s3::get_bucket(
+    prefix = prefix,
+    bucket = bucket,
+    max = max,
+    delimiter = "/"
+  ) |>
+    attr("CommonPrefixes")
+
+  if (subfolder_only) {
+    sf |>
+      stringr::str_remove(prefix) |>
+      stringr::str_remove("/$")
+  } else sf
+}

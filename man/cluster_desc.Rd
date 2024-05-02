@@ -14,7 +14,8 @@ cluster_desc(
   instance_type = "t2.small",
   terminate = TRUE,
   security_group_ids = c("sg-01f269087c271cf61", "sg-0f0e8b61aa72dbdef"),
-  renv_directory_cmds = NULL
+  renv_directory_cmds = NULL,
+  renv_directory_cmds_post = NULL
 )
 }
 \description{

@@ -16,7 +16,8 @@ execute_on_cluster(
   terminate = TRUE,
   upload_s3_prefix = "upload-rstudio-server-ubuntu-task",
   upload_s3_bucket = "gcpd",
-  renv_directory_cmds = NULL
+  renv_directory_cmds = NULL,
+  renv_directory_cmds_post = NULL
 )
 }
 \arguments{
