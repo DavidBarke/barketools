@@ -162,6 +162,8 @@ s3_merge <- function(s3_keys_in, s3_key_out, bucket = "gcpd") {
 #'
 #' @returns If `value == "vector"`, a character vector of S3 keys. If
 #' `value == "df"` a data frame of S3 keys.
+#'
+#' @export
 s3_list_files <- function(
     prefix = NULL, bucket = "gcpd", include_folder = FALSE, max = 1e3,
     value = c("vector", "df"), delimiter = NULL
@@ -194,6 +196,8 @@ s3_list_files <- function(
 #'
 #' @inheritParams s3_list_files
 #' @param subfolder_only Remove the prefix from the subfolder S3 key.
+#'
+#' @export
 s3_list_subfolders <- function(
     prefix = NULL, bucket = "gcpd", max = 1e3, subfolder_only = FALSE
 ) {
