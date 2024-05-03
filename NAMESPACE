@@ -3,6 +3,8 @@
 export(batch_vector)
 export(compustat_s3_path)
 export(data_source_s3_path)
+export(dfs_search)
+export(dfs_search_reqs)
 export(download_patents_view)
 export(download_patents_view_to_s3)
 export(download_patents_view_to_s3_chunked)
