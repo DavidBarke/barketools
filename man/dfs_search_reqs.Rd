@@ -5,7 +5,7 @@
 \title{Large DFS Search}
 \usage{
 dfs_search_reqs(
-  x,
+  keywords,
   task_size = 100,
   postback_url = Sys.getenv("POSTBACK_URL"),
   language_code = "en",
@@ -15,6 +15,8 @@ dfs_search_reqs(
 )
 }
 \arguments{
+\item{keywords}{Character vector of keywords.}
+
 \item{task_size}{Number of keywords that should be put into a single
 request. Maximum 100.}
 
@@ -29,4 +31,8 @@ Search for more than 100 keywords in DataForSEO's Google Organic Search. This
 function constructs a list of requests. When submitting these requests, the
 calling function has to ensure that the rate limit from less than 2,000
 requests with 100 keywords each is met.
+}
+\details{
+This function assumes that keywords are already URL encoded, e.g., using
+[urltools::url_encode].
 }

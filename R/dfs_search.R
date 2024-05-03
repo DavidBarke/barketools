@@ -45,13 +45,16 @@ dfs_search <- function(
 #' calling function has to ensure that the rate limit from less than 2,000
 #' requests with 100 keywords each is met.
 #'
+#' This function assumes that keywords are already URL encoded, e.g., using
+#' [urltools::url_encode].
+#'
 #' @inheritParams dfs_search
 #' @param task_size Number of keywords that should be put into a single
 #' request. Maximum 100.
 #'
 #' @export
 dfs_search_reqs <- function(
-    x,
+    keywords,
     task_size = 100,
     postback_url = Sys.getenv("POSTBACK_URL"),
     language_code = "en",
@@ -60,13 +63,12 @@ dfs_search_reqs <- function(
     password = Sys.getenv("DFS_PASSWORD")
 ) {
   stopifnot(task_size <= 100)
-  n <- length(x)
+  n <- length(keywords)
   batch_starts <- seq(1, n, by = task_size)
 
   purrr::map(batch_starts, \(batch_start) {
     batch_end <- min(batch_start + task_size - 1, n)
-    batch_keywords <- x[batch_start:batch_end] |>
-      urltools::url_encode()
+    batch_keywords <- keywords[batch_start:batch_end]
 
     tasks <- keywords_to_tasks(
       keywords = batch_keywords,
