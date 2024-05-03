@@ -206,20 +206,28 @@ s3_list_files <- function(
 #' @param subfolder_only Remove the prefix from the subfolder S3 key.
 #'
 #' @export
+
 s3_list_subfolders <- function(
     prefix = NULL, bucket = "gcpd", max = 1e3, subfolder_only = FALSE
 ) {
-  sf <- aws.s3::get_bucket(
-    prefix = prefix,
-    bucket = bucket,
-    max = max,
-    delimiter = "/"
-  ) |>
-    attr("CommonPrefixes")
+  s3 <- paws::s3()
+  continuation_token <- NULL
+  n <- ceiling(max / 1e3)
+  purrr::map(seq_len(n), \(i) {
+    if (i > 1 && length(continuation_token) == 0) {
+      character()
+    } else {
+      x <- s3$list_objects_v2(
+        Bucket = bucket,
+        Prefix = prefix,
+        Delimiter = "/",
+        ContinuationToken = continuation_token
+      )
 
-  if (subfolder_only) {
-    sf |>
-      stringr::str_remove(prefix) |>
-      stringr::str_remove("/$")
-  } else sf
+      continuation_token <<- x$NextContinuationToken
+
+      x$CommonPrefixes |> purrr::map_chr("Prefix")
+    }
+  }, .progress = TRUE) |>
+    purrr::list_c()
 }
