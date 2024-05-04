@@ -174,26 +174,34 @@ s3_merge <- function(s3_keys_in, s3_key_out, bucket = "gcpd") {
 #' @export
 s3_list_files <- function(
     prefix = NULL, bucket = "gcpd", include_folder = FALSE, max = 1e3,
-    value = c("vector", "df"), delimiter = NULL
+    delimiter = NULL
 ) {
-  value <- match.arg(value)
+  s3 <- paws::s3()
+  continuation_token <- NULL
+  n <- ceiling(max / 1e3)
+  keys <- purrr::map(seq_len(n), \(i) {
+    if (i > 1 && length(continuation_token) == 0) {
+      character()
+    } else {
+      x <- s3$list_objects_v2(
+        Bucket = bucket,
+        Prefix = prefix,
+        Delimiter = delimiter,
+        ContinuationToken = continuation_token
+      )
 
-  files <- aws.s3::get_bucket_df(
-    bucket = bucket,
-    prefix = prefix,
-    max = max,
-    delimiter = delimiter
-  )
+      continuation_token <<- x$NextContinuationToken
 
-  df <- if (include_folder) {
-    files
-  } else {
-    files |>
-      dplyr::filter(!stringr::str_detect(Key, "/$"))
-  } |>
-    tibble::as_tibble()
+      x$Contents |> purrr::map_chr("Key")
+    }
+  }, .progress = TRUE) |>
+    purrr::list_c()
 
-  if (value == "vector") df$Key else df
+  if (!include_folder) {
+    keys <- keys[!stringr::str_detect(keys, "/$")]
+  }
+
+  keys
 }
 
 
