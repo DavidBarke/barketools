@@ -18,3 +18,12 @@ batch_vector <- function(x, batch_size) {
     x[batch_start:batch_end]
   })
 }
+
+
+
+#' @export
+print_nrow <- function(df) {
+  n <- nrow(df)
+  cli::cli_alert_info("Number of rows: {n}")
+  invisible(df)
+}

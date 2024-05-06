@@ -9,7 +9,6 @@ s3_list_files(
   bucket = "gcpd",
   include_folder = FALSE,
   max = 1000,
-  value = c("vector", "df"),
   delimiter = NULL
 )
 }
@@ -22,10 +21,10 @@ s3_list_files(
 
 \item{max}{Maximum number of results to return.}
 
-\item{value}{See `Value`.}
-
 \item{delimiter}{Character string used to group keys. Read the AWS docs for
 more details.}
+
+\item{value}{See `Value`.}
 }
 \value{
 If `value == "vector"`, a character vector of S3 keys. If
