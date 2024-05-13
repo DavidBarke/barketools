@@ -57,7 +57,7 @@ download_patents_view_to_s3 <- function(
 ) {
   tsv_path <- download_patents_view(table = table)
 
-  df <- readr::read_tsv(tsv_path)
+  df <- data.table::fread(tsv_path, header = TRUE, sep = "\t")
   file.remove(tsv_path)
 
   arrow::write_dataset(
