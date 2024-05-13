@@ -84,10 +84,11 @@ download_patents_view_to_s3_chunked <- function(
 ) {
   tsv_path <- download_patents_view(table = table)
 
-  readr::read_tsv_chunked(
-    file = tsv_path,
-    callback = \(x, pos) {
-      x[[chunk_column_name]] <- pos %/% chunk_size
+  fread_chunked(
+    tsv_path,
+    chunk_size = chunk_size,
+    callback = \(x, chunk) {
+      x[[chunk_column_name]] <- chunk
 
       arrow::write_dataset(
         x,
@@ -95,7 +96,38 @@ download_patents_view_to_s3_chunked <- function(
         partitioning = chunk_column_name
       )
     },
-    chunk_size = chunk_size,
-    show_col_types = FALSE
+    sep = "\t",
+    header = TRUE
   )
+}
+
+
+
+#' @export
+fread_chunked <- function(file, chunk_size, callback, ...) {
+  chunk <- 0
+  done <- FALSE
+  while (TRUE) {
+    tryCatch(
+      {
+        x <- data.table::fread(
+          file,
+          skip = chunk * chunk_size,
+          nrows = chunk_size,
+          ...
+        )
+
+        callback(x, chunk)
+
+        chunk <- chunk + 1
+      },
+      error = function(e) {
+        done <<- TRUE
+      }
+    )
+
+    if (done) break
+  }
+
+  chunk
 }
