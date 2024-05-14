@@ -15,5 +15,5 @@ Imports:
     cli (>= 3.6.2),
     dplyr,
     ggplot2,
-    purrr
+    purrr,
     data.table
