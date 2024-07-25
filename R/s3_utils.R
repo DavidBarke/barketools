@@ -38,22 +38,21 @@ requires_s3 <- function(path, suggestion = NULL) {
 #'
 #' @export
 s3_key_exists <- function(s3_key, bucket = "gcpd", verbose = FALSE) {
-  out <- shell(
-    glue::glue(
-      "aws s3api head-object",
-      "--bucket {bucket}",
-      "--key {key}",
-      bucket = bucket,
-      key = s3_key,
-      .sep = " "
-    ),
-    wait = FALSE,
-    intern = TRUE
-  ) |> suppressWarnings()
+  s3 <- paws::s3()
 
-  if (verbose) cat(out)
-
-  (attr(out, "status") %||% 0) != 254
+  tryCatch(
+    {
+      s3$head_object(
+        Bucket = bucket,
+        Key = s3_key
+      )
+      return(TRUE)
+    },
+    error = function(e) {
+      if (verbose) cli::cli_alert_warning(e)
+      return(FALSE)
+    }
+  )
 }
 
 
