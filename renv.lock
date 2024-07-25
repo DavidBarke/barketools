@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.2.2",
+    "Version": "4.4.0",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -84,7 +84,7 @@
     },
     "arrow": {
       "Package": "arrow",
-      "Version": "14.0.2.1",
+      "Version": "16.1.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -102,7 +102,7 @@
         "utils",
         "vctrs"
       ],
-      "Hash": "20312936045590f74e29a36919f05dde"
+      "Hash": "d9cb18a8fc53895548150650cadde3a6"
     },
     "askpass": {
       "Package": "askpass",
@@ -1479,13 +1479,10 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "0.17.3",
-      "Source": "Repository",
+      "Version": "1.0.7",
+      "OS_type": null,
       "Repository": "CRAN",
-      "Requirements": [
-        "utils"
-      ],
-      "Hash": "4543b8cd233ae25c6aba8548be9e747e"
+      "Source": "Repository"
     },
     "reticulate": {
       "Package": "reticulate",
