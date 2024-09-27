@@ -27,3 +27,11 @@ print_nrow <- function(df) {
   cli::cli_alert_info("Number of rows: {n}")
   invisible(df)
 }
+
+
+
+#' @export
+print_if <- function(x, cond) {
+  if (cond) print(x)
+  x
+}
