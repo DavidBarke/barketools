@@ -71,6 +71,11 @@ wrds_datasets <- function(conn, library) {
 #' WRDS Dataset Columns
 #'
 #' Get all columns of a WRDS dataset.
+#' @inheritParams wrds_datasets
+#' @param dataset Name of WRDS dataset within the library.
+#'
+#' @returns A tibble with column `column_name` containing the names of all
+#' columns in the given dataset.
 #'
 #' @export
 wrds_dataset_columns <- function(conn, library, dataset) {
@@ -90,17 +95,26 @@ wrds_dataset_columns <- function(conn, library, dataset) {
 
 
 
-
+#' WRDS Dataset Count
+#'
+#' Get number of records in a WRDS dataset.
+#'
+#' @inheritParams wrds_dataset_columns
+#'
+#' @returns An integer.
+#'
+#' @export
 wrds_dataset_count <- function(conn, library, dataset) {
   DBI::dbGetQuery(
     conn,
-    "SELECT COUNT(*)
+    "SELECT COUNT(*) AS n
     FROM {library}.{dataset}" |>
       glue::glue(
         library = library,
         dataset = dataset
       )
   ) |>
-    tibble::as_tibble()
+    tibble::as_tibble() |>
+    dplyr::pull(n)
 }
 
