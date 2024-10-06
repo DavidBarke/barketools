@@ -213,7 +213,6 @@ s3_list_files <- function(
 #' @param subfolder_only Remove the prefix from the subfolder S3 key.
 #'
 #' @export
-
 s3_list_subfolders <- function(
     prefix = NULL, bucket = "gcpd", max = 1e3, subfolder_only = FALSE
 ) {
@@ -237,4 +236,25 @@ s3_list_subfolders <- function(
     }
   }, .progress = TRUE) |>
     purrr::list_c()
+}
+
+
+
+#' Read JSON file from S3
+#'
+#' @param bucket S3 bucket.
+#' @param key S3 key of JSON file.
+#'
+#' @returns A list representing the contents of the JSON file.
+#'
+#' @export
+s3_read_json <- function(bucket, key) {
+  s3 <- paws::s3()
+  s3$get_object(
+    Bucket = bucket,
+    Key = key
+  ) |>
+    getElement("Body") |>
+    rawToChar() |>
+    jsonlite::fromJSON(simplifyVector = FALSE)
 }
