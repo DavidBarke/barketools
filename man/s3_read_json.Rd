@@ -4,7 +4,7 @@
 \alias{s3_read_json}
 \title{Read JSON file from S3}
 \usage{
-s3_read_json()
+s3_read_json(bucket, key)
 }
 \arguments{
 \item{bucket}{S3 bucket.}

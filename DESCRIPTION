@@ -17,4 +17,6 @@ Imports:
     ggplot2,
     purrr,
     data.table,
-    paws
+    paws,
+    Rcpp
+LinkingTo: Rcpp
