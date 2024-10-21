@@ -23,7 +23,7 @@ dfs_search(
 \item{location_code}{Location code, see https://api.dataforseo.com/v3/serp/google/locations.}
 }
 \value{
-Output of [httr2::req_perform].
+Output of \link[httr2:req_perform]{httr2::req_perform}.
 }
 \description{
 Search for up to 100 keywords in DataForSEO's Google Organic Search.

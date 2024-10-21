@@ -10,10 +10,10 @@ wrds_connect(user)
 \item{user}{Character. WRDS user name.}
 }
 \value{
-A `DBI` connection to WRDS.
+A \code{DBI} connection to WRDS.
 }
 \description{
-Make sure to setup your [local RStudio](https://wrds-www.wharton.upenn.edu/pages/support/programming-wrds/programming-r/r-from-the-web/)
-or [RStudioServer](https://wrds-www.wharton.upenn.edu/pages/support/programming-wrds/programming-r/r-from-the-web/)
+Make sure to setup your \href{https://wrds-www.wharton.upenn.edu/pages/support/programming-wrds/programming-r/r-from-the-web/}{local RStudio}
+or \href{https://wrds-www.wharton.upenn.edu/pages/support/programming-wrds/programming-r/r-from-the-web/}{RStudioServer}
 as described on the linked websites.
 }

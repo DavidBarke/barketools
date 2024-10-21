@@ -2,7 +2,7 @@
 % Please edit documentation in R/s3_utils.R
 \name{s3_key_exists_list}
 \alias{s3_key_exists_list}
-\title{Apply `s3_key_exists` recursively to S3 keys in a list}
+\title{Apply \code{s3_key_exists} recursively to S3 keys in a list}
 \usage{
 s3_key_exists_list(
   l,
@@ -14,7 +14,7 @@ s3_key_exists_list(
 \arguments{
 \item{l}{List.}
 
-\item{verbose}{If `TRUE`, print more output.}
+\item{verbose}{If \code{TRUE}, print more output.}
 
 \item{is_s3_key}{Function that determines which elements should be treated as S3
 keys}

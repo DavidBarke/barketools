@@ -7,7 +7,7 @@
 download_patents_view(table)
 }
 \arguments{
-\item{table}{Table name, e.g., `g_location_disambiguated`.}
+\item{table}{Table name, e.g., \code{g_location_disambiguated}.}
 }
 \value{
 Path to the unzipped tsv file.

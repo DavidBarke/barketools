@@ -9,7 +9,7 @@ print_if(x, cond)
 \arguments{
 \item{x}{Object to be printed conditionally.}
 
-\item{cond}{Logical. If `TRUE`, `x` is printed.}
+\item{cond}{Logical. If \code{TRUE}, \code{x} is printed.}
 }
 \description{
 Print object if condition holds

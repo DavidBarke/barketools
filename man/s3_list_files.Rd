@@ -17,18 +17,18 @@ s3_list_files(
 
 \item{bucket}{S3 bucket.}
 
-\item{include_folder}{If `TRUE`, also include S3 keys referring to folders.}
+\item{include_folder}{If \code{TRUE}, also include S3 keys referring to folders.}
 
 \item{max}{Maximum number of results to return.}
 
 \item{delimiter}{Character string used to group keys. Read the AWS docs for
 more details.}
 
-\item{value}{See `Value`.}
+\item{value}{See \code{Value}.}
 }
 \value{
-If `value == "vector"`, a character vector of S3 keys. If
-`value == "df"` a data frame of S3 keys.
+If \code{value == "vector"}, a character vector of S3 keys. If
+\code{value == "df"} a data frame of S3 keys.
 }
 \description{
 List Files on S3

@@ -7,11 +7,11 @@
 download_patents_view_to_s3(table, s3_out)
 }
 \arguments{
-\item{table}{Table name, e.g., `g_location_disambiguated`.}
+\item{table}{Table name, e.g., \code{g_location_disambiguated}.}
 
-\item{s3_out}{S3 path, e.g., `s3://<bucket>/path`}
+\item{s3_out}{S3 path, e.g., \verb{s3://<bucket>/path}}
 }
 \description{
 Downloads zipped table from patentsview.org, unzips it, reads it into R
-using [readr::read_tsv], and writes it to `s3_out`.
+using \link[readr:read_delim]{readr::read_tsv}, and writes it to \code{s3_out}.
 }

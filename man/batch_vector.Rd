@@ -12,8 +12,8 @@ batch_vector(x, batch_size)
 \item{batch_size}{An integer.}
 }
 \value{
-A list where each element contains `batch_size` elements of `x`. The
-last element of the list contains at most `batch_size` elements of `x`.
+A list where each element contains \code{batch_size} elements of \code{x}. The
+last element of the list contains at most \code{batch_size} elements of \code{x}.
 }
 \description{
 Split a vector into sequential batches

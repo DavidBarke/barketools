@@ -11,10 +11,10 @@ apply_if(x, cond, f)
 
 \item{cond}{Logical.}
 
-\item{f}{Function that takes one argument `x`.}
+\item{f}{Function that takes one argument \code{x}.}
 }
 \value{
-If `cond` `f(x)`, else `x`.
+If \code{cond} \code{f(x)}, else \code{x}.
 }
 \description{
 Apply function if condition holds

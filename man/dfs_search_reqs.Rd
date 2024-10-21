@@ -34,5 +34,5 @@ requests with 100 keywords each is met.
 }
 \details{
 This function assumes that keywords are already URL encoded, e.g., using
-[urltools::url_encode].
+\link[urltools:encoder]{urltools::url_encode}.
 }

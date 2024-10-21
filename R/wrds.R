@@ -22,72 +22,85 @@ wrds_connect <- function(user) {
 
 
 
-#' WRDS Libraries
+#' WRDS Schemata
 #'
-#' Get a list of all available WRDS libraries.
+#' Get all available WRDS schemata.
 #'
-#' @param conn Connection to WRDS from [wrds_connect()].
+#' @param conn Database connection to WRDS created with [wrds_connect].
 #'
-#' @returns A tibble with column `table_schema`.
+#' @returns A tibble with the following column:
+#' * `schema_name`: Schema name. Use [wrds_schema_tables] to query all tables
+#' under a schema.
 #'
 #' @export
-wrds_libraries <- function(conn) {
+wrds_schemata <- function(conn) {
   DBI::dbGetQuery(
     conn,
-    "SELECT DISTINCT table_schema
+    "SELECT schema_name
+    FROM information_schema.schemata
+    ORDER BY schema_name"
+  ) |>
+    tibble::as_tibble()
+}
+
+
+
+#' WRDS Tables
+#'
+#' Get all available tables under a schema.
+#'
+#' @inheritParams wrds_schemata
+#' @param schema Name of WRDS schema, e.g., `"crsp"`.
+#'
+#' @returns A tibble with the following columns:
+#' * `table_schema`: `schema`.
+#' * `table_name`: Table name. Use [wrds_table_columns] to query column names
+#' of a table.
+#' * `table_type`:  Table type. One of `"BASE TABLE"`, `"VIEW"` or
+#' `"FOREIGN TABLE"`.
+#'
+#' @export
+wrds_schema_tables <- function(conn, schema) {
+  DBI::dbGetQuery(
+    conn,
+    "SELECT table_schema, table_name, table_type
     FROM information_schema.tables
-    WHERE table_type ='VIEW' OR table_type ='FOREIGN TABLE'
-    ORDER BY table_schema"
-  ) |>
-    tibble::as_tibble()
-}
-
-
-
-#' WRDS Datasets
-#'
-#' Get all available datasets within a given WRDS library.
-#'
-#' @inheritParams wrds_libraries
-#' @param library Name of WRDS library, e.g., `"crsp"`.
-#'
-#' @returns A tibble with column `table_name`.
-#'
-#' @export
-wrds_datasets <- function(conn, library) {
-  DBI::dbGetQuery(
-    conn,
-    "SELECT DISTINCT table_name
-    FROM information_schema.columns
-    WHERE table_schema = '{library}'
+    WHERE table_schema = '{schema}'
     ORDER BY table_name" |>
-      glue::glue(library = library)
+      glue::glue(schema = schema)
   ) |>
     tibble::as_tibble()
 }
 
 
 
-#' WRDS Dataset Columns
+#' WRDS Table Columns
 #'
-#' Get all columns of a WRDS dataset.
-#' @inheritParams wrds_datasets
-#' @param dataset Name of WRDS dataset within the library.
+#' Get all columns of a WRDS table.
 #'
-#' @returns A tibble with column `column_name` containing the names of all
-#' columns in the given dataset.
+#' @inheritParams wrds_schema_tables
+#' @param table Table name within the given schema.
+#'
+#' @returns A tibble with the following columns:
+#' * `table_schema`: `schema`.
+#' * `table_name`: `table`.
+#' * `column_name`: Column name.
+#' * `column_default`: Default value.
+#' * `is_nullable`: `"YES"` or `"NO"`.
+#' * `data_type`: [Data Type](https://www.postgresql.org/docs/current/datatype.html).
 #'
 #' @export
-wrds_dataset_columns <- function(conn, library, dataset) {
+wrds_table_columns <- function(conn, schema, table) {
   DBI::dbGetQuery(
     conn,
-    "SELECT column_name
+    "SELECT table_schema, table_name, column_name, column_default, is_nullable,
+    data_type
     FROM information_schema.columns
-    WHERE table_schema = '{library}' AND table_name = '{dataset}'
+    WHERE table_schema = '{schema}' AND table_name = '{table}'
     ORDER BY column_name" |>
       glue::glue(
-        library = library,
-        dataset = dataset
+        schema = schema,
+        table = table
       )
   ) |>
     tibble::as_tibble()
@@ -95,23 +108,23 @@ wrds_dataset_columns <- function(conn, library, dataset) {
 
 
 
-#' WRDS Dataset Count
+#' WRDS Table Count
 #'
-#' Get number of records in a WRDS dataset.
+#' Get number of records in a WRDS table
 #'
-#' @inheritParams wrds_dataset_columns
+#' @inheritParams wrds_table_columns
 #'
 #' @returns An integer.
 #'
 #' @export
-wrds_dataset_count <- function(conn, library, dataset) {
+wrds_table_count <- function(conn, schema, table) {
   DBI::dbGetQuery(
     conn,
     "SELECT COUNT(*) AS n
-    FROM {library}.{dataset}" |>
+    FROM {schema}.{table}" |>
       glue::glue(
-        library = library,
-        dataset = dataset
+        schema = schema,
+        table = table
       )
   ) |>
     tibble::as_tibble() |>

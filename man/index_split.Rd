@@ -12,10 +12,10 @@ index_split(x, n)
 \item{n}{An integer.}
 }
 \value{
-A list with at most `n` elements. The `i`-th element is a vector
-containing all the elements of `x` belonging to the same equivalence class
-with respect to the `modulus` operation. That means \eqn{x_1} and \eqn{x_2}
-are both elements of `out[i]` if eqn{x_1 mod n = x_2 mod n = i}.
+A list with at most \code{n} elements. The \code{i}-th element is a vector
+containing all the elements of \code{x} belonging to the same equivalence class
+with respect to the \code{modulus} operation. That means \eqn{x_1} and \eqn{x_2}
+are both elements of \code{out[i]} if eqn{x_1 mod n = x_2 mod n = i}.
 }
 \description{
 Split a vector into modulus batches

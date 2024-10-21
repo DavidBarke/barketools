@@ -25,20 +25,20 @@ execute_on_cluster(
 managed by renv and where all dependencies have been installed into the
 AMI image.}
 
-\item{rmd_file}{Path to a RMD script relative to `renv_directory`.}
+\item{rmd_file}{Path to a RMD script relative to \code{renv_directory}.}
 
 \item{iterable}{Vector or list. A separate instance is launched for each
 element.}
 
-\item{iter_to_params}{Function that transforms an element of `iterable`
-into a list of parameters that are passed to `rmarkdown::render` in the
-`params` argument.}
+\item{iter_to_params}{Function that transforms an element of \code{iterable}
+into a list of parameters that are passed to \code{rmarkdown::render} in the
+\code{params} argument.}
 
 \item{image_id}{AMI image id. Each instance will be based on this image.}
 
 \item{instance_type}{EC2 instance type.}
 
-\item{terminate}{If `TRUE` terminate the instance after script completes.}
+\item{terminate}{If \code{TRUE} terminate the instance after script completes.}
 
 \item{upload_s3_prefix}{Path to which the JSON file describing the cluster
 is uploaded. The default will upload it to a preconfigured folder in S3
