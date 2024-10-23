@@ -102,37 +102,11 @@ s3_key_exists_list <- function(
 write_json_to_s3 <- function(x, s3_key, bucket = "gcpd") {
   tf <- tempfile(fileext = ".json")
   jsonlite::write_json(x, tf, auto_unbox = TRUE)
-  s3_put_object(
-    file = tf,
-    s3_key = s3_key,
-    bucket = bucket
-  )
-}
-
-
-
-#' Upload file to S3
-#'
-#' @param file File.
-#' @param s3_key S3 key.
-#' @param bucket S3 bucket.
-#'
-#' @export
-s3_put_object <- function(file, s3_key, bucket = "gcpd") {
-  if (!exists("shell")) {
-    cli::cli_abort("`shell` command not available on this OS!")
-  }
-  shell(
-    glue::glue(
-      "aws s3api put-object",
-      "--bucket {bucket}",
-      "--key {key}",
-      "--body {body}",
-      bucket = bucket,
-      key = s3_key,
-      body = file,
-      .sep = " "
-    )
+  s3 <- paws::s3()
+  s3$put_object(
+    Body = tf,
+    Key = s3_key,
+    Bucket = bucket
   )
 }
 
