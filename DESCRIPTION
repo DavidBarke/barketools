@@ -19,5 +19,7 @@ Imports:
     purrr,
     data.table,
     paws,
-    Rcpp
+    Rcpp,
+    DBI,
+    stringr
 LinkingTo: Rcpp
