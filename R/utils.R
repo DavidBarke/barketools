@@ -45,7 +45,8 @@ batch_vector <- function(x, batch_size) {
 #'
 #' @export
 print_nrow <- function(df) {
-  n <- nrow(df)
+  n <- nrow(df) |>
+    format(big.mark = ",", scientific = FALSE)
   cli::cli_alert_info("Number of rows: {n}")
   invisible(df)
 }
