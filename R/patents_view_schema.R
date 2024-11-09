@@ -39,7 +39,7 @@ compute_patents_view_schema <- function() {
     purrr::list_rbind() |>
     dplyr::relocate(
       table,
-      columm = data_element_name,
+      column = data_element_name,
       column_type = type
     ) |>
     dplyr::mutate(

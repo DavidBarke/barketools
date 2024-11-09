@@ -8,7 +8,50 @@
 #' @returns Path to the unzipped tsv file.
 #'
 #' @export
-download_patents_view <- function(table) {
+download_patents_view <- function(
+  table = c(
+    "g_applicant_not_disambiguated",
+    "g_application",
+    "g_assignee_disambiguated",
+    "g_assignee_not_disambiguated",
+    "g_attorney_disambiguated",
+    "g_attorney_not_disambiguated",
+    "g_botanic",
+    "g_brf_sum_text",
+    "g_claim",
+    "g_cpc_current",
+    "g_cpc_title",
+    "g_detail_desc_text",
+    "g_draw_desc_text",
+    "g_examiner_not_disambiguated",
+    "g_figures",
+    "g_foreign_citation",
+    "g_foreign_priority",
+    "g_gov_interest",
+    "g_gov_interest_contracts",
+    "g_gov_interest_org",
+    "g_inventor_disambiguated",
+    "g_inventor_not_disambiguated",
+    "g_ipc_at_issue",
+    "g_location_disambiguated",
+    "g_location_not_disambiguated",
+    "g_other_reference",
+    "g_patent",
+    "g_patent_abstract",
+    "g_pct_data",
+    "g_persistent_assignee",
+    "g_persistent_inventor",
+    "g_rel_app_text",
+    "g_us_application_citation",
+    "g_us_patent_citation",
+    "g_us_rel_doc",
+    "g_us_term_of_grant",
+    "g_uspc_at_issue",
+    "g_wipo_technology"
+  )
+) {
+  table <- match.arg(table)
+
   folder <- if (stringr::str_detect(table, "^pg")) {
     "pregrant_publications"
   } else if (stringr::str_detect(table, "^g_brf")) {
@@ -57,13 +100,30 @@ download_patents_view_to_s3 <- function(
 ) {
   tsv_path <- download_patents_view(table = table)
 
-  df <- data.table::fread(tsv_path, header = TRUE, sep = "\t")
+  df <- data.table::fread(
+    tsv_path,
+    header = TRUE,
+    sep = "\t",
+    colClasses = patents_view_col_classes(table) |> unname(),
+    col.names = patents_view_col_classes(table) |> names()
+  )
   file.remove(tsv_path)
 
   arrow::write_dataset(
     df,
     s3_out
   )
+}
+
+
+
+patents_view_col_classes <- function(table) {
+  df <- patents_view_schema |>
+    dplyr::filter(table == .env$table)
+  column_names <- df$column
+  r_column_type <- df$r_column_type
+  names(r_column_type) <- column_names
+  r_column_type
 }
 
 
@@ -97,22 +157,34 @@ download_patents_view_to_s3_chunked <- function(
       )
     },
     sep = "\t",
-    header = TRUE
+    colClasses = patents_view_col_classes(table) |> unname(),
+    col.names = patents_view_col_classes(table) |> names()
   )
 }
 
 
 
 #' @export
-fread_chunked <- function(file, chunk_size, callback, ...) {
+fread_chunked <- function(
+  file, chunk_size, callback, header = FALSE, verbose = TRUE, ...
+) {
+  if (formals(callback) |> length() != 2) {
+    cli::cli_abort(
+      "'callback' has to be a function that takes two arguments:
+      'x' (the chunk that has been read) and 'chunk' (the zero-based index
+      of the chunk that has been read)"
+    )
+  }
+
   chunk <- 0
   done <- FALSE
   while (TRUE) {
     tryCatch(
       {
+        if (verbose) cli::cli_alert_info("Reading chunk {chunk}")
         x <- data.table::fread(
           file,
-          skip = chunk * chunk_size,
+          skip = chunk * chunk_size + (!header),
           nrows = chunk_size,
           ...
         )
@@ -122,7 +194,15 @@ fread_chunked <- function(file, chunk_size, callback, ...) {
         chunk <- chunk + 1
       },
       error = function(e) {
-        done <<- TRUE
+        if (stringr::str_detect(e$message, "but the input only has \\d+ lines")) {
+          if (verbose) cli::cli_alert_info("No more lines to read.")
+          done <<- TRUE
+        } else {
+          stop(e)
+        }
+      },
+      warning = function(w) {
+        stop(w)
       }
     )
 

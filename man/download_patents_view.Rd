@@ -4,7 +4,21 @@
 \alias{download_patents_view}
 \title{Read a table from PatentsView}
 \usage{
-download_patents_view(table)
+download_patents_view(
+  table = c("g_applicant_not_disambiguated", "g_application", "g_assignee_disambiguated",
+    "g_assignee_not_disambiguated", "g_attorney_disambiguated",
+    "g_attorney_not_disambiguated", "g_botanic", "g_brf_sum_text", "g_claim",
+    "g_cpc_current", "g_cpc_title", "g_detail_desc_text", "g_draw_desc_text",
+    "g_examiner_not_disambiguated", "g_figures", "g_foreign_citation",
+    "g_foreign_priority", "g_gov_interest", "g_gov_interest_contracts",
+    "g_gov_interest_org", "g_inventor_disambiguated", "g_inventor_not_disambiguated", 
+  
+      "g_ipc_at_issue", "g_location_disambiguated", "g_location_not_disambiguated",
+    "g_other_reference", "g_patent", "g_patent_abstract", "g_pct_data",
+    "g_persistent_assignee", "g_persistent_inventor", "g_rel_app_text",
+    "g_us_application_citation", "g_us_patent_citation", "g_us_rel_doc",
+    "g_us_term_of_grant", "g_uspc_at_issue", "g_wipo_technology")
+)
 }
 \arguments{
 \item{table}{Table name, e.g., \code{g_location_disambiguated}.}
