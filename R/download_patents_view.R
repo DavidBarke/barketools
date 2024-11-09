@@ -170,12 +170,19 @@ patents_view_schema <- function() {
         dplyr::mutate(
           table = table_name
         ) |>
-        filter(data_element_name != "")
+        dplyr::filter(data_element_name != "")
     }) |>
     purrr::list_rbind() |>
     dplyr::relocate(
       table,
       columm = data_element_name,
       column_type = type
+    ) |>
+    dplyr::mutate(
+      r_column_type = dplyr::case_when(
+        stringr::str_detect(column_type, "^(big)?int") ~ "integer",
+        column_type == "date" ~ "Date",
+        .default = "character"
+      )
     )
 }
