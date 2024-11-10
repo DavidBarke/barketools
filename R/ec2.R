@@ -63,7 +63,7 @@ execute_on_cluster <- function(
   )
 }
 
-#' Cluster description
+# Cluster description
 cluster_desc <- function(
     renv_directory,
     rmd_file,

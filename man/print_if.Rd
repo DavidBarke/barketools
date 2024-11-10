@@ -11,6 +11,9 @@ print_if(x, cond)
 
 \item{cond}{Logical. If \code{TRUE}, \code{x} is printed.}
 }
+\value{
+The unaltered object \code{x}.
+}
 \description{
 Print object if condition holds
 }

@@ -14,10 +14,15 @@ s3_key_exists_list(
 \arguments{
 \item{l}{List.}
 
-\item{verbose}{If \code{TRUE}, print more output.}
+\item{predicate}{A function taking two arguments \code{l} (an element of a list)
+and \code{name} (currently defunct). If this function returns \code{TRUE}, \code{transform}
+is applied on this element of the list.}
 
-\item{is_s3_key}{Function that determines which elements should be treated as S3
-keys}
+\item{transform}{A function taking one argument \code{l} (an element of a list).
+This function should return a character representing a potential S3 key. This
+character is then passed to \link{s3_key_exists}.}
+
+\item{verbose}{If \code{TRUE}, print more output.}
 }
 \description{
 This function raises an error as soon as any S3 key does not exist.

@@ -9,6 +9,9 @@ print_nrow(df)
 \arguments{
 \item{df}{Data frame.}
 }
+\value{
+The unaltered data frame \code{df}.
+}
 \description{
 Print number of rows
 }

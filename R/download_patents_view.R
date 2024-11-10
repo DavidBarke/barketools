@@ -164,6 +164,24 @@ download_patents_view_to_s3_chunked <- function(
 
 
 
+#' Chunked Fread
+#'
+#' Chunked version of [data.table::fread].
+#'
+#' @param file File name in working directory, path to file (passed through
+#' [base::path.expand] for convenience), or a URL starting
+#' http://, file://, etc. Compressed files with extension ‘.gz’ and ‘.bz2’ are
+#' supported if the R.utils package is installed.
+#' @param chunk_size Number of rows that is read per chunk.
+#' @param callback A function taking two arguments `x` (the data of the current
+#' chunk) and `chunk` (the zero-based number of the current chunk). Use this
+#' function to process the chunked data, e.g., by transforming it and writing
+#' it to a database.
+#' @param header Argument passed to [data.table::fread]. Currently, only
+#' `FALSE` is supported, so that it is suggested to supply `col.names` as well.
+#' @param verbose If `TRUE`, print progress information.
+#' @param ... Arguments passed to [data.table::fread].
+#'
 #' @export
 fread_chunked <- function(
   file, chunk_size, callback, header = FALSE, verbose = TRUE, ...
@@ -176,6 +194,8 @@ fread_chunked <- function(
     )
   }
 
+  stopifnot(!header)
+
   chunk <- 0
   done <- FALSE
   while (TRUE) {
@@ -186,6 +206,7 @@ fread_chunked <- function(
           file,
           skip = chunk * chunk_size + (!header),
           nrows = chunk_size,
+          header = header,
           ...
         )
 

@@ -43,6 +43,8 @@ batch_vector <- function(x, batch_size) {
 #'
 #' @param df Data frame.
 #'
+#' @returns The unaltered data frame `df`.
+#'
 #' @export
 print_nrow <- function(df) {
   n <- nrow(df) |>
@@ -57,6 +59,8 @@ print_nrow <- function(df) {
 #'
 #' @param x Object to be printed conditionally.
 #' @param cond Logical. If `TRUE`, `x` is printed.
+#'
+#' @returns The unaltered object `x`.
 #'
 #' @export
 print_if <- function(x, cond) {

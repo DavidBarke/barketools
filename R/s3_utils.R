@@ -62,8 +62,12 @@ s3_key_exists <- function(s3_key, bucket = "gcpd", verbose = FALSE) {
 #' This function raises an error as soon as any S3 key does not exist.
 #'
 #' @param l List.
-#' @param is_s3_key Function that determines which elements should be treated as S3
-#' keys
+#' @param predicate A function taking two arguments `l` (an element of a list)
+#' and `name` (currently defunct). If this function returns `TRUE`, `transform`
+#' is applied on this element of the list.
+#' @param transform A function taking one argument `l` (an element of a list).
+#' This function should return a character representing a potential S3 key. This
+#' character is then passed to [s3_key_exists].
 #' @param verbose If `TRUE`, print more output.
 #'
 #' @export

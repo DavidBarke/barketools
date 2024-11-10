@@ -1,4 +1,53 @@
 url: https://davidbarke.github.io/barketools/
 template:
   bootstrap: 5
+reference:
+- title: Utilities
+  desc: >
+    Functions that can improve your workflow
+  contents:
+  - apply_if
+  - batch_vector
+  - cusip8_to_cusip9
+  - fread_chunked
+  - index_split
+  - list_to_str
+  - print_if
+  - print_nrow
+  - parse_year_params
+
+- title: WRDS
+  desc: >
+    Programmatically access WRDS
+  contents:
+  - starts_with("wrds")
+
+- title: DataForSEO
+  desc: >
+    Search for keywords in DataForSEO's Google Organic Search
+  contents:
+  - dfs_search
+  - dfs_search_reqs
+
+- title: PatentsView
+  desc: >
+    Interact with PatentsView data
+  contents:
+  - compute_patents_view_schema
+  - download_patents_view
+  - download_patents_view_to_s3
+  - download_patents_view_to_s3_chunked
+  - patents_view_schema
+  - repair_pv_filing_dates
+
+- title: AWS
+  desc: >
+    Mostly wrappers around functions in the paws package
+  contents:
+  - starts_with("s3")
+  - starts_with("ec2")
+  - execute_on_cluster
+  - get_most_recent_inventory_date
+  - read_inventory
+  - write_json_to_s3
 
