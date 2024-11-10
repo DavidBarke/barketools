@@ -6,7 +6,6 @@
 <url><loc>https://davidbarke.github.io/barketools/index.html</loc></url>
 <url><loc>https://davidbarke.github.io/barketools/reference/apply_if.html</loc></url>
 <url><loc>https://davidbarke.github.io/barketools/reference/batch_vector.html</loc></url>
-<url><loc>https://davidbarke.github.io/barketools/reference/cluster_desc.html</loc></url>
 <url><loc>https://davidbarke.github.io/barketools/reference/compute_patents_view_schema.html</loc></url>
 <url><loc>https://davidbarke.github.io/barketools/reference/cusip8_to_cusip9.html</loc></url>
 <url><loc>https://davidbarke.github.io/barketools/reference/dfs_search.html</loc></url>
@@ -17,6 +16,7 @@
 <url><loc>https://davidbarke.github.io/barketools/reference/ec2_on_demand_limit.html</loc></url>
 <url><loc>https://davidbarke.github.io/barketools/reference/ec2_vcpu_usage.html</loc></url>
 <url><loc>https://davidbarke.github.io/barketools/reference/execute_on_cluster.html</loc></url>
+<url><loc>https://davidbarke.github.io/barketools/reference/fread_chunked.html</loc></url>
 <url><loc>https://davidbarke.github.io/barketools/reference/get_most_recent_inventory_date.html</loc></url>
 <url><loc>https://davidbarke.github.io/barketools/reference/index.html</loc></url>
 <url><loc>https://davidbarke.github.io/barketools/reference/index_split.html</loc></url>

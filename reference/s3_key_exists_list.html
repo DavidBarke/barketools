@@ -53,13 +53,20 @@
 <dd><p>List.</p></dd>
 
 
+<dt id="arg-predicate">predicate<a class="anchor" aria-label="anchor" href="#arg-predicate"></a></dt>
+<dd><p>A function taking two arguments <code>l</code> (an element of a list)
+and <code>name</code> (currently defunct). If this function returns <code>TRUE</code>, <code>transform</code>
+is applied on this element of the list.</p></dd>
+
+
+<dt id="arg-transform">transform<a class="anchor" aria-label="anchor" href="#arg-transform"></a></dt>
+<dd><p>A function taking one argument <code>l</code> (an element of a list).
+This function should return a character representing a potential S3 key. This
+character is then passed to <a href="s3_key_exists.html">s3_key_exists</a>.</p></dd>
+
+
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>If <code>TRUE</code>, print more output.</p></dd>
-
-
-<dt id="arg-is-s-key">is_s3_key<a class="anchor" aria-label="anchor" href="#arg-is-s-key"></a></dt>
-<dd><p>Function that determines which elements should be treated as S3
-keys</p></dd>
 
 </dl></div>
 
