@@ -26,3 +26,7 @@ LinkingTo: Rcpp
 URL: https://davidbarke.github.io/barketools/
 Depends: 
     R (>= 2.10)
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

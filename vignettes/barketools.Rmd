@@ -1,0 +1,42 @@
+---
+title: "barketools"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{barketools}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+`barketools` contains a collection of functions that has been useful to me in the past across different projects. Some of these functions have very specific use cases (e.g., the ones related to PatentsView or AWs) whereas other ones can be used more general (e.g., the ones listed as *Utilities*).
+
+```{r setup}
+library(barketools)
+```
+
+### WRDS
+
+The functions starting with `wrds_` can be used to connect to the WRDS' PostgreSQL database and retrieve information about schemata, tables, columns and number of rows.
+
+```{r}
+wrds <- wrds_connect("dbarke")
+
+wrds |>
+  wrds_schemata()
+
+wrds |>
+  wrds_schema_tables("crsp")
+
+wrds |>
+  wrds_table_columns("crsp", "crsp_daily_data")
+
+wrds |>
+  wrds_table_count("crsp", "crsp_daily_data")
+```
+
