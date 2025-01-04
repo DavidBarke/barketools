@@ -236,3 +236,26 @@ s3_read_json <- function(bucket, key) {
     rawToChar() |>
     jsonlite::fromJSON(simplifyVector = FALSE)
 }
+
+
+
+#' Read XLSX file from S3
+#'
+#' @param bucket S3 bucket.
+#' @param key S3 key of XLSX file.
+#'
+#' @returns A tibble.
+#'
+#' @export
+s3_read_xlsx <- function(bucket, key) {
+  s3 <- paws::s3()
+
+  tf <- tempfile()
+  s3$download_file(
+    Bucket = bucket,
+    Key = key,
+    Filename = tf
+  )
+
+  readxl::read_xlsx(tf)
+}

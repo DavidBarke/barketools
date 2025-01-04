@@ -21,7 +21,8 @@ Imports:
     paws,
     Rcpp,
     DBI,
-    stringr
+    stringr,
+    RPostgres
 LinkingTo: Rcpp
 URL: https://davidbarke.github.io/barketools/
 Depends: 
