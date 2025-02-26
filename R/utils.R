@@ -42,12 +42,13 @@ batch_vector <- function(x, batch_size) {
 #' Print number of rows
 #'
 #' @param df Data frame.
+#' @param f Function. Number of rows of `f(df)` is printed.
 #'
 #' @returns The unaltered data frame `df`.
 #'
 #' @export
-print_nrow <- function(df) {
-  n <- nrow(df) |>
+print_nrow <- function(df, f = identity) {
+  n <- nrow(f(df)) |>
     format(big.mark = ",", scientific = FALSE)
   cli::cli_alert_info("Number of rows: {n}")
   invisible(df)
@@ -81,4 +82,20 @@ print_if <- function(x, cond) {
 #' @export
 apply_if <- function(x, cond, f) {
   if (cond) f(x) else x
+}
+
+
+
+#' Get Current Date
+#'
+#' Like [Sys.Date()] but with `_` instead of `-`.
+#'
+#' @export
+sys_date <- function() {
+  Sys.Date() |>
+    gsub(
+      pattern = "-",
+      replacement = "_",
+      x = _
+    )
 }
