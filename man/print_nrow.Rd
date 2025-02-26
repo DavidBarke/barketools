@@ -4,10 +4,12 @@
 \alias{print_nrow}
 \title{Print number of rows}
 \usage{
-print_nrow(df)
+print_nrow(df, f = identity)
 }
 \arguments{
 \item{df}{Data frame.}
+
+\item{f}{Function. Number of rows of \code{f(df)} is printed.}
 }
 \value{
 The unaltered data frame \code{df}.
