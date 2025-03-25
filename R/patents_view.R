@@ -1,3 +1,9 @@
+#' PatentsView Assignee Types
+#'
+#' @returns A named character vector. Names are numerical values (1-9) of
+#' and values are textual descriptions of assignee types.
+#'
+#' @export
 patents_view_assignee_type_map <- function() {
   assignee_types <- c(
     "Unassigned",
