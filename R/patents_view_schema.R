@@ -4,11 +4,17 @@
 #' https://patentsview.org/download/data-download-dictionary into a tibble.
 #'
 #' @export
-compute_patents_view_schema <- function() {
-  data_download_dictionary_url <-
-    "https://patentsview.org/download/data-download-dictionary"
-
-  ddd_html <- rvest::read_html(data_download_dictionary_url)
+compute_patents_view_schema <- function(
+  data_download_dictionary_url = "https://patentsview.org/download/data-download-dictionary"
+) {
+  ddd_html <- rvest::read_html(
+    httr::GET(
+      data_download_dictionary_url,
+      httr::add_headers(
+        "User-Agent" = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+      )
+    )
+  )
   ddd_tables <- rvest::html_nodes(ddd_html, "tbody") |>
     rvest::html_table() |>
     purrr::keep(\(table) nrow(table) > 0) |>

@@ -4,7 +4,10 @@
 \alias{compute_patents_view_schema}
 \title{Get PatentsView Schema}
 \usage{
-compute_patents_view_schema()
+compute_patents_view_schema(
+  data_download_dictionary_url =
+    "https://patentsview.org/download/data-download-dictionary"
+)
 }
 \description{
 This function converts the data download dictionary from PatentsView on
