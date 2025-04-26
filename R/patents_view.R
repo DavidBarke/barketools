@@ -5,17 +5,43 @@
 #'
 #' @export
 patents_view_assignee_type_map <- function() {
-  assignee_types <- c(
-    "Unassigned",
-    "US Company or Corporation",
-    "Foreign Company or Corporation",
-    "US Individual",
-    "Foreign Individual",
-    "US Federal Government",
-    "Foreign Government",
-    "US County Government",
-    "US State Government"
-  )
-  names(assignee_types) <- 1:9
+  tbl <- patents_view_assignee_type_tbl()
+  assignee_types <- tbl$assignee_type_str
+  names(assignee_types) <- tbl$assignee_type
   assignee_types
+}
+
+
+#' PatentsView Assignee Types
+#'
+#' @returns A tibble with the following columns:
+#' * `assignee_type` (numeric). PatentsView assignee type.
+#' * `assignee_type_str` (character). Textual description of assignee type.
+#' * `partial_interest` (logical). `TRUE` if partial interest.
+#'
+#' @export
+patents_view_assignee_type_tbl <- function() {
+  tbl <- tibble::tribble(
+    ~assignee_type, ~assignee_type_str,
+    0, "0",
+    1, "Unassigned",
+    2, "US Company or Corporation",
+    3, "Foreign Company or Corporation",
+    4, "US Individual",
+    5, "Foreign Individual",
+    6, "US Federal Government",
+    7, "Foreign Government",
+    8, "US County Government",
+    9, "US State Government",
+    12, "US Company or Corporation",
+    13, "Foreign Company or Corporation",
+    14, "US Individual",
+    15, "Foreign Individual",
+    16, "US Federal Government",
+    17, "Foreign Government",
+    18, "US County Government",
+    19, "US State Government"
+  )
+  tbl$partial_interest <- tbl$assignee_type %in% 12:19
+  tbl
 }
