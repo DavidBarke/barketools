@@ -10,7 +10,10 @@ patents_view_assignee_type_tbl()
 A tibble with the following columns:
 \itemize{
 \item \code{assignee_type} (numeric). PatentsView assignee type.
+\item \code{assignee_type_2} (character). Assignee category, e.g., \code{"Firm"} or
+\code{"Government"}.
 \item \code{assignee_type_str} (character). Textual description of assignee type.
+\item \code{assignee_region} (character). \code{"US"} or \code{"Foreign"}.
 \item \code{partial_interest} (logical). \code{TRUE} if partial interest.
 }
 }
