@@ -15,6 +15,16 @@ reference:
   - print_if
   - print_nrow
   - parse_year_params
+  - save_figure
+  - sys_date
+
+- title: Statistics
+  desc: >
+    Functions that perform statistical analysis
+  contents:
+  - assess_cluster
+  - cluster
+  - ecdf_tbl
 
 - title: WRDS
   desc: >
@@ -37,7 +47,7 @@ reference:
   - download_patents_view
   - download_patents_view_to_s3
   - download_patents_view_to_s3_chunked
-  - patents_view_schema
+  - starts_with("patents_view")
   - repair_pv_filing_dates
 
 - title: AWS
