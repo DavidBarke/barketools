@@ -259,3 +259,26 @@ s3_read_xlsx <- function(bucket, key) {
 
   readxl::read_xlsx(tf)
 }
+
+
+
+#' Read XLS file from S3
+#'
+#' @param bucket S3 bucket.
+#' @param key S3 key of XLS file.
+#'
+#' @returns A tibble.
+#'
+#' @export
+s3_read_xls <- function(bucket, key) {
+  s3 <- paws::s3()
+
+  tf <- tempfile()
+  s3$download_file(
+    Bucket = bucket,
+    Key = key,
+    Filename = tf
+  )
+
+  readxl::read_xls(tf)
+}
