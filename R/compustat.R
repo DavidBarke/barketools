@@ -80,8 +80,7 @@ compustat_get_financials <- function(
     filter(
       .by = c(gvkey, datadate, src),
       n() > 1
-    ) |>
-    print_nrow()
+    )
 
   if (nrow(dupl) != 0) {
     cli::cli_alert_warning("Data is not identified on gvkey-datadate-src level!")
@@ -235,8 +234,8 @@ compustat_annualize_financials <- function(
 
   # Sanity check: one row per gvkey, src, curcd, year
   n_dupl <- financials_annualized_2 |>
-    filter(n() > 1, .by = c(gvkey, src, curcd, year)) |>
-    print_nrow()
+    filter(n() > 1, .by = c(gvkey, src, curcd, year))
+
   if (n_dupl > 0) {
     cli::cli_alert_warning("Data is not identified on gvkey-src-curcd-year level!")
   }
