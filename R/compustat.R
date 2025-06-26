@@ -73,8 +73,6 @@ compustat_get_financials <- function(
   ) |>
     as_tibble()
 
-  dbDisconnect(wrds)
-
   ### Check that there is at most one observation per GVKEY-datadate-src
   dupl <- financials |>
     filter(
