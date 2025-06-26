@@ -61,3 +61,11 @@ reference:
   - read_inventory
   - write_json_to_s3
 
+- title: Compustat
+  desc: >
+    Utility functions for Compustat
+  contents:
+  - pad_gvkey
+  - compustat_get_financials
+  - compustat_annualize_financials
+
