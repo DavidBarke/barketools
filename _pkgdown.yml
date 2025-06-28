@@ -17,6 +17,7 @@ reference:
   - parse_year_params
   - save_figure
   - sys_date
+  - unique_non_na
 
 - title: Statistics
   desc: >

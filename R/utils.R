@@ -99,3 +99,17 @@ sys_date <- function() {
       x = _
     )
 }
+
+
+
+#' Extract Unique Elements (Without NA)
+#'
+#' Like [unique] but `NA`s are dropped.
+#'
+#' @inheritParams base::unique
+#'
+#' @export
+unique_non_na <- function(x, incomparables = FALSE, ...) {
+  unique(x, incomparables = incomparables, ...) |>
+    setdiff(NA)
+}
