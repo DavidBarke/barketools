@@ -109,7 +109,45 @@ sys_date <- function() {
 #' @inheritParams base::unique
 #'
 #' @export
-unique_non_na <- function(x, incomparables = FALSE, ...) {
+unique_non_NA <- function(x, incomparables = FALSE, ...) {
   unique(x, incomparables = incomparables, ...) |>
     setdiff(NA)
+}
+
+
+
+#' Concatenate Strings
+#'
+#' Like [paste] but `NA`s are dropped.
+#'
+#' @inheritParams base::paste
+#' @param NA_if_all_NA If `TRUE`, return `NA` if `...` only contains `NA`. If
+#' `FALSE`, return `character(0)`.
+#'
+#' @name pasteNA
+#'
+#' @export
+paste_NA <- function(
+  ..., sep = " ", collapse = NULL, recycle0 = FALSE, NA_if_all_NA = TRUE
+) {
+  args <- list(...)
+  args <- args[!is.na(args)]
+  if (NA_if_all_NA && all(is.na(args))) return(NA)
+  do.call(paste, c(args, sep = sep, collapse = collapse, recycle0 = recycle0))
+}
+
+
+
+#' @rdname pasteNA
+#' @export
+paste0_NA <- function(
+  ..., collapse = NULL, recycle0 = FALSE, NA_if_all_NA = TRUE
+) {
+  paste_NA(
+    ...,
+    sep = "",
+    collapse = collapse,
+    recycle0 = recycle0,
+    NA_if_all_NA = NA_if_all_NA
+  )
 }
