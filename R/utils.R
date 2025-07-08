@@ -151,3 +151,14 @@ paste0_NA <- function(
     NA_if_all_NA = NA_if_all_NA
   )
 }
+
+
+
+#' NA if empty
+#'
+#' Returns [NA] if the input is empty.
+#'
+#' @export
+na_if_empty <- function(x) {
+  if (length(x) == 0) NA else x
+}
