@@ -4,13 +4,22 @@
 \alias{compustat_get_financials}
 \title{Download Compustat Financials}
 \usage{
-compustat_get_financials(wrds, columns)
+compustat_get_financials(wrds, columns, indfmt = "INDL", consol = "C")
 }
 \arguments{
 \item{wrds}{A database connection to WRDS. See \link{wrds_connect}.}
 
 \item{columns}{A character vector containing names of columns to download
 from \code{comp_global_daily_all.funda} and \code{comp_global_daily.g_funda}.}
+
+\item{consol}{A character vector containing consolidation levels for which
+financials should be returned. Valid elements are \code{"C"} (consolidated),
+\code{"D"} (domestic), \code{"P"} (parent company only / unconsolidated),
+\code{"N"} (primary consolidated) and \code{"R"} (restated consolidated).}
+
+\item{indl}{A character vector containing industry formats for which
+financials should be returned. Valid elements are \code{"INDL"} (industrial) and
+\code{"FS"} (financial services).}
 }
 \description{
 This function downloads financials from the North America and Global

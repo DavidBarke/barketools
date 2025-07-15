@@ -24,12 +24,35 @@ pad_gvkey <- function(gvkey) {
 #' @param wrds A database connection to WRDS. See [wrds_connect].
 #' @param columns A character vector containing names of columns to download
 #' from `comp_global_daily_all.funda` and `comp_global_daily.g_funda`.
+#' @param indl A character vector containing industry formats for which
+#' financials should be returned. Valid elements are `"INDL"` (industrial) and
+#' `"FS"` (financial services).
+#' @param consol A character vector containing consolidation levels for which
+#' financials should be returned. Valid elements are `"C"` (consolidated),
+#' `"D"` (domestic), `"P"` (parent company only / unconsolidated),
+#' `"N"` (primary consolidated) and `"R"` (restated consolidated).
 #'
 #' @export
 compustat_get_financials <- function(
   wrds,
-  columns
+  columns,
+  indfmt = "INDL",
+  consol = "C"
 ) {
+  valid <- indfmt %in% c("INDL", "FS")
+  if (!all(valid)) {
+    cli::cli_abort(
+      paste0("\"", indfmt[!valid][1], "\" is not valid for `indfmt`.")
+    )
+  }
+
+  valid <- consol %in% c("C", "D", "P", "N", "R")
+  if (!all(valid)) {
+    cli::cli_abort(
+      paste0("\"", consol[!valid][1], "\" is not valid for `consol`.")
+    )
+  }
+
   columns <- unique(
     c(
       "datadate",
@@ -39,6 +62,16 @@ compustat_get_financials <- function(
       "indfmt",
       columns
     )
+  )
+
+  indfmt_filter <- glue::glue(
+    "indfmt IN ({indfmt})",
+    indfmt = paste0("'", indfmt, "'", collapse = ",")
+  )
+
+  consol_filter <- glue::glue(
+    "consol IN ({consol})",
+    consol = paste0("'", consol, "'", collapse = ",")
   )
 
   financials <- dbGetQuery(
@@ -65,24 +98,15 @@ compustat_get_financials <- function(
         (src = 'north_america' AND compustat.datafmt = 'STD')
         OR (src = 'global' AND compustat.datafmt = 'HIST_STD')
       )
-      AND consol = 'C'
-      AND indfmt = 'INDL'
+      AND {indfmt_filter}
+      AND {consol_filter}
     " |> glue::glue(
-      columns = paste0(columns, collapse = ",")
+      columns = paste0(columns, collapse = ","),
+      indfmt_filter = indfmt_filter,
+      consol_filter = consol_filter
     )
   ) |>
     as_tibble()
-
-  ### Check that there is at most one observation per GVKEY-datadate-src
-  dupl <- financials |>
-    filter(
-      .by = c(gvkey, datadate, src),
-      n() > 1
-    )
-
-  if (nrow(dupl) != 0) {
-    cli::cli_alert_warning("Data is not identified on gvkey-datadate-src level!")
-  }
 
   financials
 }
