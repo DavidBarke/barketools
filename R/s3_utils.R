@@ -188,11 +188,10 @@ s3_list_files <- function(
 #' Subfolders are exactly one level further down than the given prefix.
 #'
 #' @inheritParams s3_list_files
-#' @param subfolder_only Remove the prefix from the subfolder S3 key.
 #'
 #' @export
 s3_list_subfolders <- function(
-    prefix = NULL, bucket = "gcpd", max = 1e3, subfolder_only = FALSE
+    prefix = NULL, bucket = "gcpd", max = 1e3
 ) {
   s3 <- paws::s3()
   continuation_token <- NULL
@@ -282,3 +281,12 @@ s3_read_xls <- function(bucket, key) {
 
   readxl::read_xls(tf)
 }
+
+
+
+#' Read TXT file from S3
+#'
+#' @param bucket S3 bucket.
+#' @param key S3 key of TXT file.
+#'
+#' @returns A tibble.

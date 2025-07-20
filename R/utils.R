@@ -162,3 +162,4 @@ paste0_NA <- function(
 na_if_empty <- function(x) {
   if (length(x) == 0) NA else x
 }
+

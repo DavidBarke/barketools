@@ -4,12 +4,7 @@
 \alias{s3_list_subfolders}
 \title{List S3 Subfolders}
 \usage{
-s3_list_subfolders(
-  prefix = NULL,
-  bucket = "gcpd",
-  max = 1000,
-  subfolder_only = FALSE
-)
+s3_list_subfolders(prefix = NULL, bucket = "gcpd", max = 1000)
 }
 \arguments{
 \item{prefix}{Common prefix to all files.}
@@ -17,8 +12,6 @@ s3_list_subfolders(
 \item{bucket}{S3 bucket.}
 
 \item{max}{Maximum number of results to return.}
-
-\item{subfolder_only}{Remove the prefix from the subfolder S3 key.}
 }
 \description{
 Subfolders are exactly one level further down than the given prefix.
