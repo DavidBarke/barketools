@@ -36,6 +36,18 @@ fread_chunked <- function(
     )
   }
 
+  if (!header & "colClasses" %in% names(list(...))) {
+    colClasses <- list(...)$colClasses
+    n_cols <- data.table::fread(file, nrows = 0) |>
+      length()
+    if (length(colClasses) != n_cols) {
+      cli::cli_abort(
+        "colClasses must be a vector whose length is equal to the number of
+        columns if `header` is `FALSE`."
+      )
+    }
+  }
+
   col.names <- if (header) {
     data.table::fread(file, nrows = 0) |>
       names()
