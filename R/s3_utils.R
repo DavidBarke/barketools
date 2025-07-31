@@ -281,12 +281,3 @@ s3_read_xls <- function(bucket, key) {
 
   readxl::read_xls(tf)
 }
-
-
-
-#' Read TXT file from S3
-#'
-#' @param bucket S3 bucket.
-#' @param key S3 key of TXT file.
-#'
-#' @returns A tibble.

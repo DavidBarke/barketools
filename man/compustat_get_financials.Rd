@@ -21,7 +21,23 @@ financials should be returned. Valid elements are \code{"C"} (consolidated),
 financials should be returned. Valid elements are \code{"INDL"} (industrial) and
 \code{"FS"} (financial services).}
 }
+\value{
+A \link{dplyr:tibble} with all the columns under \code{Details} and specified
+in \code{columns}. In addition, the column \code{src} is created with specifies the
+origin of an observation: it is either \code{"north_america"} or \code{"global"}.
+}
 \description{
 This function downloads financials from the North America and Global
 Compustat file.
+}
+\details{
+The following columns will be always included in the result:
+\itemize{
+\item \code{datadate}
+\item \code{gvkey}
+\item \code{curcd}
+\item \code{datafmt}
+\item \code{consol}
+\item \code{indfmt}
+}
 }

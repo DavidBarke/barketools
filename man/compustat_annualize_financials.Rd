@@ -4,22 +4,20 @@
 \alias{compustat_annualize_financials}
 \title{Annualize Compustat Financials}
 \usage{
-compustat_annualize_financials(financials, flow_variables, stock_variables)
+compustat_annualize_financials(financials)
 }
 \arguments{
 \item{financials}{Compustat financials as returned by
-\link{compustat_get_financials}.}
-
-\item{flow_variables}{Character vector of flow variables. For example,
-\code{"capx"} or \code{"revt"}.}
-
-\item{stock_variables}{Character vector of stock variables. For example,
-\code{"at"} or \code{"csoh"}.}
+\link{compustat_get_financials} or \link{compustat_deduplicate_financials}.}
 }
 \description{
 Annualize Compustat Financials
 }
 \details{
+This function annualizes Compustat financials. Stock and flow variables are
+handled separately. The column type of a column is inferred from
+\link{compustat_column_type_tbl}.
+
 Assumptions:
 \itemize{
 \item Flow variables are spread uniformly across months, i.e., if a firm files
