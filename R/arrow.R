@@ -107,6 +107,10 @@ arrow_map_chunked <- function(
     })
   })
 
+  # Keep less than max_index elements
+  max_index <- min(length(chunk_combs_list), max_index)
+  chunk_combs_list <- chunk_combs_list[seq_len(max_index)]
+
   # Read datasets per chunk combination and apply callback
   chunk_combs_list |> purrr::iwalk(
     \(l, i) {
@@ -123,6 +127,8 @@ arrow_map_chunked <- function(
       args <- c(args, list(...))
 
       do.call(callback, args)
+
+      if (interactive()) Sys.sleep(0)
     },
     .progress = TRUE
   )
