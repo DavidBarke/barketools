@@ -129,6 +129,7 @@ arrow_map_chunked <- function(
       do.call(callback, args)
 
       if (interactive()) Sys.sleep(0)
+      gc()
     },
     .progress = TRUE
   )
