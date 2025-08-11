@@ -2,6 +2,7 @@
 
 export(apply_if)
 export(arrow_latest_release)
+export(arrow_map_chunked)
 export(assess_cluster)
 export(batch_vector)
 export(cluster)

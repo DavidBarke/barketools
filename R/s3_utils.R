@@ -281,3 +281,4 @@ s3_read_xls <- function(bucket, key) {
 
   readxl::read_xls(tf)
 }
+
