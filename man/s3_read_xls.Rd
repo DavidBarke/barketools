@@ -4,12 +4,14 @@
 \alias{s3_read_xls}
 \title{Read XLS file from S3}
 \usage{
-s3_read_xls(bucket, key)
+s3_read_xls(bucket, key, ...)
 }
 \arguments{
 \item{bucket}{S3 bucket.}
 
 \item{key}{S3 key of XLS file.}
+
+\item{...}{Arguments passed to \link[readxl:read_excel]{readxl::read_xls}.}
 }
 \value{
 A tibble.

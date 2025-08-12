@@ -242,11 +242,12 @@ s3_read_json <- function(bucket, key) {
 #'
 #' @param bucket S3 bucket.
 #' @param key S3 key of XLSX file.
+#' @param ... Arguments passed to [readxl::read_xlsx].
 #'
 #' @returns A tibble.
 #'
 #' @export
-s3_read_xlsx <- function(bucket, key) {
+s3_read_xlsx <- function(bucket, key, ...) {
   s3 <- paws::s3()
 
   tf <- tempfile()
@@ -256,7 +257,7 @@ s3_read_xlsx <- function(bucket, key) {
     Filename = tf
   )
 
-  readxl::read_xlsx(tf)
+  readxl::read_xlsx(tf, ...)
 }
 
 
@@ -265,11 +266,12 @@ s3_read_xlsx <- function(bucket, key) {
 #'
 #' @param bucket S3 bucket.
 #' @param key S3 key of XLS file.
+#' @param ... Arguments passed to [readxl::read_xls].
 #'
 #' @returns A tibble.
 #'
 #' @export
-s3_read_xls <- function(bucket, key) {
+s3_read_xls <- function(bucket, key, ...) {
   s3 <- paws::s3()
 
   tf <- tempfile()
@@ -279,6 +281,6 @@ s3_read_xls <- function(bucket, key) {
     Filename = tf
   )
 
-  readxl::read_xls(tf)
+  readxl::read_xls(tf, ...)
 }
 
