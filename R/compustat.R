@@ -349,6 +349,7 @@ compustat_column_type_tbl <- function() {
     "ebitda", 2,
     "emp", 3,
     "ib", 2,
+    "oibdp", 2,
     "ppegt", 1,
     "sale", 2
   ) |>
