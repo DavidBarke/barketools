@@ -121,7 +121,7 @@ compustat_get_financials <- function(
     "SELECT DISTINCT {columns}, 'north_america' AS src
       FROM comp_na_daily_all.funda
       WHERE
-        datafmt = ‘STD’
+        datafmt = 'STD'
         AND {indfmt_filter}
         AND {consol_filter}
     " |>
@@ -137,7 +137,7 @@ compustat_get_financials <- function(
     "SELECT DISTINCT {columns}, 'global' AS src
       FROM comp_global_daily.g_funda
       WHERE
-        datafmt = ‘HIST_STD’
+        datafmt = 'HIST_STD'
         AND {indfmt_filter}
         AND {consol_filter}
     " |>
