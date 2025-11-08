@@ -298,7 +298,7 @@ compustat_annualize_financials <- function(
       ends_with("_stock")
     ) |>
     dplyr::filter(
-      !dplyr::if_any(tidyselect::all_of(stock_variables), is.na)
+      !dplyr::if_all(tidyselect::all_of(stock_variables), is.na)
     )
 
   # Compute min_year and max_year per GVKEY and use it to remove years for which
