@@ -331,27 +331,44 @@ compustat_annualize_financials <- function(
 
 compustat_column_type_tbl <- function() {
   tibble::tribble(
-    ~column_name, ~column_type,
+    ~column_name, ~column_type, ~src
+    # --- Column Type
     # 0: identifier
     # 1: stock
     # 2: flow
     # 3: non-financial stock
     # 4: non-financial flow
     # 9: identifier
-    "gvkey", 0,
-    "datadate", 0,
-    "curcd", 0,
-    "datafmt", 0,
-    "indfmt", 0,
-    "consol", 0,
-    "at", 1,
-    "capx", 2,
-    "ebitda", 2,
-    "emp", 3,
-    "ib", 2,
-    "oibdp", 2,
-    "ppegt", 1,
-    "sale", 2
+    # --- Source
+    # 0: All
+    # 1: North America Only
+    # 2: Global Only
+    "gvkey", 0, 0,
+    "datadate", 0, 0,
+    "curcd", 0, 0,
+    "datafmt", 0, 0,
+    "indfmt", 0, 0,
+    "consol", 0, 0,
+    "at", 1, 0,
+    "capx", 2, 0,
+    "csho", 3, 1,
+    "cshoi", 3, 2,
+    "dlc", 1, 0,
+    "dltt", 1, 0,
+    "ebitda", 2, 0,
+    "emp", 3, 0,
+    "ib", 2, 0,
+    "ni", 2, 1,
+    "nicon", 2, 2,
+    "oibdp", 2, 0,
+    "ppegt", 1, 0,
+    "ppent", 1, 0,
+    "prcc", 3, 1,
+    "pstk", 1, 0,
+    "pstkl", 1, 1,
+    "revt", 2, 0,
+    "sale", 2, 0,
+    "xrd", 2, 0
   ) |>
     dplyr::mutate(
       column_type = factor(
@@ -364,6 +381,15 @@ compustat_column_type_tbl <- function() {
           "non-financial stock",
           "non-financial flow",
           "other"
+        )
+      ),
+      src = factor(
+        src,
+        levels = 0:2,
+        labels = c(
+          "all",
+          "north-america only",
+          "global only"
         )
       )
     )
