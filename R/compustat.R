@@ -78,6 +78,34 @@ compustat_get_financials <- function(
     )
   )
 
+  # Handle columns
+  missing_columns <- columns[
+    !columns %in% compustat_column_type_tbl()$column_name
+  ]
+  if (length(missing_columns)) {
+    stop(paste(
+      "The following columns need to be added to compustat_column_type_tbl():",
+      paste(missing_columns, sep = ", ")
+    ))
+  }
+
+  na_columns <- columns[
+    columns %in% (
+      compustat_column_type_tbl() |>
+        dplyr::filter(src %in% c("all", "north-america only")) |>
+        dplyr::pull(column_name)
+    )
+  ]
+
+  global_columns <- columns[
+    columns %in% (
+      compustat_column_type_tbl() |>
+        dplyr::filter(src %in% c("all", "global only")) |>
+        dplyr::pull(column_name)
+    )
+  ]
+
+  # Prepare industry format and consolidation filter
   indfmt_filter <- glue::glue(
     "indfmt IN ({indfmt})",
     indfmt = paste0("'", indfmt, "'", collapse = ",")
@@ -88,41 +116,39 @@ compustat_get_financials <- function(
     consol = paste0("'", consol, "'", collapse = ",")
   )
 
-  financials <- DBI::dbGetQuery(
+  financials_na <- DBI::dbGetQuery(
     wrds,
-    "WITH compustat_na AS (
-      SELECT DISTINCT
-      {columns}
+    "SELECT DISTINCT {columns}, 'north_america' AS src
       FROM comp_na_daily_all.funda
-    ), compustat_global AS (
-      SELECT DISTINCT
-      {columns}
-      FROM comp_global_daily.g_funda
-    ), compustat AS (
-      (SELECT *, 'north_america' AS src FROM compustat_na)
-      UNION
-      (SELECT *, 'global' AS src FROM compustat_global)
-    )
-    SELECT
-      src,
-      {columns}
-    FROM compustat
-    WHERE
-      (
-        (src = 'north_america' AND compustat.datafmt = 'STD')
-        OR (src = 'global' AND compustat.datafmt = 'HIST_STD')
-      )
-      AND {indfmt_filter}
-      AND {consol_filter}
-    " |> glue::glue(
-      columns = paste0(columns, collapse = ","),
+      WHERE
+        datafmt = ‘STD’
+        AND {indfmt_filter}
+        AND {consol_filter}
+    " |>
+    glue::glue(
+      columns = paste0(na_columns, collapse = ","),
       indfmt_filter = indfmt_filter,
       consol_filter = consol_filter
     )
-  ) |>
-    tibble::as_tibble()
+  )
 
-  financials
+  financials_global <- DBI::dbGetQuery(
+    wrds,
+    "SELECT DISTINCT {columns}, 'global' AS src
+      FROM comp_global_daily.g_funda
+      WHERE
+        datafmt = ‘HIST_STD’
+        AND {indfmt_filter}
+        AND {consol_filter}
+    " |>
+      glue::glue(
+        columns = paste0(global_columns, collapse = ","),
+        indfmt_filter = indfmt_filter,
+        consol_filter = consol_filter
+      )
+  )
+
+  dplyr::bind_rows(financials_na, financials_global)
 }
 
 
