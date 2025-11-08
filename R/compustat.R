@@ -331,7 +331,7 @@ compustat_annualize_financials <- function(
 
 compustat_column_type_tbl <- function() {
   tibble::tribble(
-    ~column_name, ~column_type, ~src
+    ~column_name, ~column_type, ~src,
     # --- Column Type
     # 0: identifier
     # 1: stock
