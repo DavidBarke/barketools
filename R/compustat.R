@@ -377,6 +377,7 @@ compustat_column_type_tbl <- function() {
     "consol", 0, 0,
     "at", 1, 0,
     "capx", 2, 0,
+    "ceq", 1, 0,
     "csho", 3, 1,
     "cshoi", 3, 2,
     "dlc", 1, 0,
@@ -384,6 +385,7 @@ compustat_column_type_tbl <- function() {
     "ebitda", 2, 0,
     "emp", 3, 0,
     "ib", 2, 0,
+    "itcb", 1, 0,
     "ni", 2, 1,
     "nicon", 2, 2,
     "oibdp", 2, 0,
@@ -395,6 +397,8 @@ compustat_column_type_tbl <- function() {
     "pstkl", 1, 1,
     "revt", 2, 0,
     "sale", 2, 0,
+    "teq", 1, 0,
+    "txdb", 1, 0,
     "xrd", 2, 0
   ) |>
     dplyr::mutate(
