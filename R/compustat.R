@@ -68,6 +68,7 @@ compustat_get_financials <- function(
 
   columns <- unique(
     c(
+      "fyear",
       "datadate",
       "gvkey",
       "curcd",
