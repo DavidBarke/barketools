@@ -210,6 +210,11 @@ compustat_annualize_financials <- function(
     dplyr::filter(column_name %in% names(financials)) |>
     dplyr::pull(column_name)
 
+  eoy_stock_variables <- column_type_tbl |>
+    dplyr::filter(column_type %in% c("eoy-stock")) |>
+    dplyr::filter(column_name %in% names(financials)) |>
+    dplyr::pull(column_name)
+
   financials_now_prev <- financials |>
     dplyr::arrange(gvkey, src, curcd, datadate) |>
     dplyr::mutate(
@@ -338,7 +343,8 @@ compustat_annualize_financials <- function(
     dplyr::select(
       gvkey, curcd, src, year,
       tidyselect::all_of(flow_variables),
-      tidyselect::all_of(stock_variables)
+      tidyselect::all_of(stock_variables),
+      tidyselect::all_of(eoy_stock_variables)
     )
 
   # Sanity check: one row per gvkey, src, curcd, year
@@ -364,6 +370,7 @@ compustat_column_type_tbl <- function() {
     # 2: flow
     # 3: non-financial stock
     # 4: non-financial flow
+    # 5: eoy-stock
     # 9: identifier
     # --- Source
     # 0: All
@@ -411,7 +418,7 @@ compustat_column_type_tbl <- function() {
           "flow",
           "non-financial stock",
           "non-financial flow",
-          "stock (year-end)",
+          "eoy-stock",
           "other"
         )
       ),
