@@ -215,6 +215,15 @@ compustat_annualize_financials <- function(
     dplyr::filter(column_name %in% names(financials)) |>
     dplyr::pull(column_name)
 
+  financials_eoy <- financials |>
+    dplyr::select(
+      gvkey, src, curcd, datadate,
+      tidyselect::all_of(eoy_stock_variables)
+    ) |>
+    dplyr::mutate(year = year(datadate)) |>
+    dplyr::select(-datadate) |>
+    dplyr::distinct()
+
   financials_now_prev <- financials |>
     dplyr::arrange(gvkey, src, curcd, datadate) |>
     dplyr::mutate(
@@ -337,7 +346,8 @@ compustat_annualize_financials <- function(
     ) |>
     dplyr::left_join(financials_min_max_year, dplyr::join_by(gvkey, src)) |>
     dplyr::filter(year >= min_year, year <= max_year_complete) |>
-    dplyr::left_join(financials_stock, dplyr::join_by(gvkey, curcd, src, year))
+    dplyr::left_join(financials_stock, dplyr::join_by(gvkey, curcd, src, year)) |>
+    dplyr::left_join(financials_eoy, dplyr::join_by(gvkey, curcd, src, year))
 
   financials_annualized_2 <- financials_annualized |>
     dplyr::select(
