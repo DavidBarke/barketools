@@ -385,7 +385,7 @@ compustat_column_type_tbl <- function() {
     "ebitda", 2, 0,
     "emp", 3, 0,
     "ib", 2, 0,
-    "itcb", 1, 0,
+    "itcb", 1, 1,
     "ni", 2, 1,
     "nicon", 2, 2,
     "oibdp", 2, 0,
