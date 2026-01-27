@@ -411,7 +411,7 @@ compustat_column_type_tbl <- function() {
           "flow",
           "non-financial stock",
           "non-financial flow",
-          "stock (year-end)"
+          "stock (year-end)",
           "other"
         )
       ),
