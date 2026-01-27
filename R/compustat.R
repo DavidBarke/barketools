@@ -389,6 +389,7 @@ compustat_column_type_tbl <- function() {
     # 2: Global Only
     "gvkey", 0, 0,
     "datadate", 0, 0,
+    "fyear", 0, 0,
     "curcd", 0, 0,
     "datafmt", 0, 0,
     "indfmt", 0, 0,
