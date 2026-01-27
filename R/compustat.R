@@ -378,8 +378,8 @@ compustat_column_type_tbl <- function() {
     "at", 1, 0,
     "capx", 2, 0,
     "ceq", 1, 0,
-    "csho", 3, 1,
-    "cshoi", 3, 2,
+    "csho", 5, 1,
+    "cshoi", 5, 2,
     "dlc", 1, 0,
     "dltt", 1, 0,
     "ebitda", 2, 0,
@@ -391,7 +391,7 @@ compustat_column_type_tbl <- function() {
     "oibdp", 2, 0,
     "ppegt", 1, 0,
     "ppent", 1, 0,
-    "prcc_c", 3, 1,
+    "prcc_c", 5, 1,
     "prcc_f", 3, 1,
     "pstk", 1, 0,
     "pstkl", 1, 1,
@@ -404,13 +404,14 @@ compustat_column_type_tbl <- function() {
     dplyr::mutate(
       column_type = factor(
         column_type,
-        levels = c(0:4, 9),
+        levels = c(0:5, 9),
         labels = c(
           "identifier",
           "stock",
           "flow",
           "non-financial stock",
           "non-financial flow",
+          "stock (year-end)"
           "other"
         )
       ),
