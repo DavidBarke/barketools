@@ -218,11 +218,10 @@ compustat_annualize_financials <- function(
 
   financials_eoy <- financials |>
     dplyr::select(
-      gvkey, src, curcd, datadate,
+      gvkey, src, curcd, fyear,
       tidyselect::all_of(eoy_stock_variables)
     ) |>
-    dplyr::mutate(year = year(datadate)) |>
-    dplyr::select(-datadate) |>
+    dplyr::rename(year = fyear) |>
     dplyr::distinct()
 
   financials_now_prev <- financials |>
