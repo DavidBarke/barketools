@@ -371,6 +371,7 @@ compustat_annualize_financials <- function(
 
 
 
+#' @export
 compustat_column_type_tbl <- function() {
   tibble::tribble(
     ~column_name, ~column_type, ~src,
@@ -443,4 +444,14 @@ compustat_column_type_tbl <- function() {
         )
       )
     )
+}
+
+
+#' @export
+compustat_get_column_names_by_type <- function(tbl, column_types) {
+  potential_columns <- compustat_column_type_tbl() |>
+    dplyr::filter(column_type %in% column_types) |>
+    dplyr::pull(column_name)
+
+  names(tbl) |> intersect(potential_columns)
 }
