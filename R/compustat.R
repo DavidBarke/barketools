@@ -187,6 +187,8 @@ compustat_get_financials <- function(
 compustat_annualize_financials <- function(
   financials
 ) {
+  warning("Function is outdated! Use 01A_annualize.Rmd instead.")
+
   stopifnot("curcd" %in% names(financials))
 
   column_type_tbl <- compustat_column_type_tbl()
@@ -382,7 +384,7 @@ compustat_column_type_tbl <- function() {
     # 3: non-financial stock
     # 4: non-financial flow
     # 5: eoy-stock
-    # 9: identifier
+    # 9: other
     # --- Source
     # 0: All
     # 1: North America Only
