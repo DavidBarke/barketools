@@ -414,7 +414,9 @@ compustat_column_type_tbl <- function() {
     "lct", 1, 0,
     "ni", 2, 1,
     "nicon", 2, 2,
+    "oiadp", 2, 0,
     "oibdp", 2, 0,
+    "pi", 2, 0,
     "ppegt", 1, 0,
     "ppent", 1, 0,
     "prcc_c", 5, 1,
@@ -426,6 +428,7 @@ compustat_column_type_tbl <- function() {
     "seq", 1, 0,
     "teq", 1, 0,
     "txdb", 1, 0,
+    "txt", 1, 0,
     "xrd", 2, 0
   ) |>
     dplyr::mutate(
